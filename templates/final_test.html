@@ -1,0 +1,807 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Focused Test - {{ weakest }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       FINAL FOCUSED TEST
+       Matches the existing Social Media Safety website
+       ========================================================= */
+
+    .final-test-page {
+        min-height: calc(100vh - 80px);
+        background: #05060d;
+        color: #f7f7fb;
+        padding: 55px 24px 80px;
+        box-sizing: border-box;
+    }
+
+    .final-test-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Header */
+
+    .final-test-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .final-test-header h1 {
+        margin: 0 0 14px;
+        color: #ffffff;
+        font-size: 42px;
+        line-height: 1.2;
+        font-weight: 800;
+    }
+
+    .final-test-header h1 span {
+        color: #a855f7;
+    }
+
+    .final-test-header p {
+        margin: 0 auto;
+        max-width: 720px;
+        color: #b9bfd0;
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+    /* Focus area */
+
+    .focus-box {
+        background: #171421;
+        border: 1px solid #70304e;
+        border-radius: 16px;
+        padding: 22px 24px;
+        margin-bottom: 36px;
+        box-sizing: border-box;
+    }
+
+    .focus-box h2 {
+        margin: 0 0 12px;
+        color: #ff646f;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .focus-box p {
+        margin: 0 0 12px;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .focus-box ul {
+        margin: 10px 0 0;
+        padding-left: 28px;
+    }
+
+    .focus-box li {
+        color: #f1f1f5;
+        margin: 4px 0;
+        line-height: 1.4;
+    }
+
+    /* Intro */
+
+    .test-intro {
+        margin-bottom: 30px;
+    }
+
+    .test-intro h2 {
+        margin: 0 0 10px;
+        color: #ffffff;
+        font-size: 27px;
+    }
+
+    .test-intro p {
+        margin: 0;
+        color: #b9bfd0;
+        line-height: 1.6;
+    }
+
+    /* Questions */
+
+    .question-card {
+        background: #0f1120;
+        border: 1px solid #292d49;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 22px;
+        box-sizing: border-box;
+    }
+
+    .question-card:hover {
+        border-color: #454a70;
+    }
+
+    .question-title {
+        display: block;
+        margin: 0 0 18px;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 750;
+        line-height: 1.55;
+    }
+
+    /* Options */
+
+    .option-label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 50px;
+        margin: 10px 0;
+        padding: 14px 17px;
+        box-sizing: border-box;
+
+        background: #15182a;
+        border: 1px solid #303550;
+        border-radius: 11px;
+
+        color: #ffffff;
+        cursor: pointer;
+
+        transition:
+            border-color 0.2s ease,
+            background 0.2s ease,
+            transform 0.15s ease;
+    }
+
+    .option-label:hover {
+        background: #1a1d32;
+        border-color: #8b5cf6;
+        transform: translateY(-1px);
+    }
+
+    .option-label input[type="radio"] {
+        appearance: auto;
+        -webkit-appearance: radio;
+
+        flex: 0 0 auto;
+        width: 15px;
+        height: 15px;
+
+        margin: 0 14px 0 0;
+        padding: 0;
+
+        accent-color: #a855f7;
+        cursor: pointer;
+    }
+
+    .option-text {
+        color: #ffffff;
+        font-size: 15.5px;
+        line-height: 1.45;
+    }
+
+    /* Selected option */
+
+    .option-label.selected {
+        background: #211a35;
+        border-color: #a855f7;
+        box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.15);
+    }
+
+    /* Submit */
+
+    .submit-area {
+        margin-top: 32px;
+        text-align: center;
+    }
+
+    .submit-button {
+        width: 100%;
+        max-width: 420px;
+        min-height: 54px;
+
+        border: none;
+        border-radius: 12px;
+
+        background: #a855f7;
+        color: #ffffff;
+
+        font-size: 16px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        box-shadow: 0 8px 25px rgba(168, 85, 247, 0.25);
+
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .submit-button:hover {
+        background: #9333ea;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(168, 85, 247, 0.35);
+    }
+
+    .submit-button:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Error */
+
+    .error-message {
+        display: none;
+
+        margin: 20px 0 0;
+        padding: 13px 16px;
+
+        border: 1px solid #ef4444;
+        border-radius: 10px;
+
+        background: #24151d;
+        color: #ffb4bb;
+
+        font-size: 14px;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    .error-message.show {
+        display: block;
+    }
+
+    /* Success/loading */
+
+    .loading-message {
+        display: none;
+        margin-top: 15px;
+        color: #9fe3c3;
+        font-size: 14px;
+    }
+
+    .loading-message.show {
+        display: block;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 700px) {
+
+        .final-test-page {
+            padding: 35px 16px 60px;
+        }
+
+        .final-test-header h1 {
+            font-size: 32px;
+        }
+
+        .final-test-header p {
+            font-size: 15px;
+        }
+
+        .focus-box {
+            padding: 19px;
+        }
+
+        .question-card {
+            padding: 19px;
+        }
+
+        .question-title {
+            font-size: 17px;
+        }
+
+        .option-label {
+            padding: 13px 14px;
+        }
+
+        .option-text {
+            font-size: 14.5px;
+        }
+    }
+</style>
+
+
+<div class="final-test-page">
+
+    <div class="final-test-container">
+
+        <!-- =====================================================
+             PAGE HEADER
+             ===================================================== -->
+
+        <div class="final-test-header">
+
+            <h1>
+                Test Your
+                <span>{{ weakest }}</span>
+                Knowledge
+            </h1>
+
+            <p>
+                You identified {{ weakest }} as your weakest area.
+                Now let's see how much you've learned.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             FOCUS AREA
+             ===================================================== -->
+
+        <div class="focus-box">
+
+            <h2>
+                Focus Area: {{ weakest }}
+            </h2>
+
+            {% if weakest_info %}
+
+                {% if weakest_info.get("description") %}
+                    <p>
+                        {{ weakest_info.get("description") }}
+                    </p>
+                {% endif %}
+
+                {% if weakest_info.get("tips") %}
+                    <ul>
+                        {% for tip in weakest_info.get("tips") %}
+                            <li>{{ tip }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+            {% else %}
+
+                <p>
+                    This is the area that needs the most improvement.
+                    Think carefully about each situation before answering.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =====================================================
+             INTRO
+             ===================================================== -->
+
+        <div class="test-intro">
+
+            <h2>
+                5-Question Focused Test
+            </h2>
+
+            <p>
+                Read each real-life situation carefully and choose
+                the safest response.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             FORM
+             ===================================================== -->
+
+        <form id="finalTestForm">
+
+            {% for question in questions %}
+
+                {% set q_index = loop.index0 %}
+
+                <div
+                    class="question-card"
+                    data-question="{{ q_index }}"
+                >
+
+                    <div class="question-title">
+                        {{ loop.index }}. {{ question.question }}
+                    </div>
+
+
+                    {% for option in question.options %}
+
+                        {% set option_index = loop.index0 %}
+
+                        <label
+                            class="option-label"
+                            data-option="{{ option_index }}"
+                        >
+
+                            <input
+                                type="radio"
+                                name="question_{{ q_index }}"
+                                value="{{ option_index }}"
+                            >
+
+                            <span class="option-text">
+                                {{ option }}
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- =================================================
+                 SUBMIT
+                 ================================================= -->
+
+            <div class="submit-area">
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                    id="submitButton"
+                >
+                    Submit Focused Test
+                </button>
+
+                <div
+                    id="errorMessage"
+                    class="error-message"
+                ></div>
+
+                <div
+                    id="loadingMessage"
+                    class="loading-message"
+                >
+                    Submitting your answers...
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("finalTestForm");
+    const submitButton = document.getElementById("submitButton");
+    const errorMessage = document.getElementById("errorMessage");
+    const loadingMessage = document.getElementById("loadingMessage");
+
+    const questionCards = Array.from(
+        document.querySelectorAll(".question-card")
+    );
+
+
+    /*
+     * ============================================================
+     * OPTION SELECTION VISUAL FIX
+     * ============================================================
+     *
+     * This makes the entire option box show as selected.
+     */
+
+    document.querySelectorAll(
+        '.option-label input[type="radio"]'
+    ).forEach(function (radio) {
+
+        radio.addEventListener("change", function () {
+
+            const questionCard = radio.closest(".question-card");
+
+            if (!questionCard) {
+                return;
+            }
+
+            questionCard
+                .querySelectorAll(".option-label")
+                .forEach(function (label) {
+                    label.classList.remove("selected");
+                });
+
+            const selectedLabel = radio.closest(".option-label");
+
+            if (selectedLabel) {
+                selectedLabel.classList.add("selected");
+            }
+
+        });
+
+    });
+
+
+    /*
+     * ============================================================
+     * SHOW ERROR
+     * ============================================================
+     */
+
+    function showError(message) {
+
+        errorMessage.textContent = message;
+        errorMessage.classList.add("show");
+
+        loadingMessage.classList.remove("show");
+
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth"
+        });
+    }
+
+
+    /*
+     * ============================================================
+     * HIDE ERROR
+     * ============================================================
+     */
+
+    function hideError() {
+
+        errorMessage.textContent = "";
+        errorMessage.classList.remove("show");
+
+    }
+
+
+    /*
+     * ============================================================
+     * SUBMIT
+     * ============================================================
+     */
+
+    form.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        hideError();
+
+        const answers = [];
+
+
+        /*
+         * IMPORTANT:
+         *
+         * We deliberately search inside each question card.
+         * We do NOT depend on nested Jinja loop.index values.
+         */
+
+        for (let i = 0; i < questionCards.length; i++) {
+
+            const card = questionCards[i];
+
+            const selected = card.querySelector(
+                'input[type="radio"]:checked'
+            );
+
+
+            if (!selected) {
+
+                showError(
+                    "Please select an answer for Question " +
+                    (i + 1) +
+                    " before submitting."
+                );
+
+                return;
+            }
+
+
+            /*
+             * Flask expects integer option indexes.
+             */
+
+            const answerIndex = parseInt(
+                selected.value,
+                10
+            );
+
+
+            if (Number.isNaN(answerIndex)) {
+
+                showError(
+                    "There was a problem reading your answer for Question " +
+                    (i + 1) +
+                    ". Please select it again."
+                );
+
+                return;
+            }
+
+
+            answers.push(answerIndex);
+
+        }
+
+
+        /*
+         * Make sure exactly 5 answers were collected.
+         */
+
+        if (answers.length !== questionCards.length) {
+
+            showError(
+                "Please answer all questions before submitting."
+            );
+
+            return;
+        }
+
+
+        /*
+         * Disable button while submitting.
+         */
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+        loadingMessage.classList.add("show");
+
+
+        /*
+         * ========================================================
+         * SEND TO FLASK
+         * ========================================================
+         */
+
+        try {
+
+            const response = await fetch(
+                "/submit-final-test",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json, text/html"
+                    },
+
+                    body: JSON.stringify({
+                        result_id: {{ result["id"] }},
+                        answers: answers
+                    })
+                }
+            );
+
+
+            /*
+             * ====================================================
+             * IMPORTANT REDIRECT FIX
+             * ====================================================
+             *
+             * Flask may return:
+             *
+             * redirect("/final-result/...")
+             *
+             * fetch() follows that redirect automatically.
+             *
+             * Therefore response.redirected becomes true and
+             * response.url becomes the final result page.
+             */
+
+            if (response.redirected) {
+
+                window.location.href = response.url;
+
+                return;
+            }
+
+
+            /*
+             * If Flask returned JSON instead, handle that too.
+             */
+
+            const contentType =
+                response.headers.get("content-type") || "";
+
+
+            if (
+                contentType.includes("application/json")
+            ) {
+
+                const data = await response.json();
+
+
+                if (data.redirect) {
+
+                    window.location.href = data.redirect;
+
+                    return;
+                }
+
+
+                if (data.url) {
+
+                    window.location.href = data.url;
+
+                    return;
+                }
+
+
+                if (data.success && data.result_id) {
+
+                    window.location.href =
+                        "/final-result/" +
+                        data.result_id;
+
+                    return;
+                }
+
+
+                if (data.error) {
+
+                    throw new Error(data.error);
+
+                }
+
+            }
+
+
+            /*
+             * If response was successful but not JSON and not
+             * redirected, use the current response URL.
+             */
+
+            if (response.ok) {
+
+                const finalUrl = response.url;
+
+                if (
+                    finalUrl &&
+                    finalUrl !== window.location.href
+                ) {
+
+                    window.location.href = finalUrl;
+
+                    return;
+                }
+
+            }
+
+
+            /*
+             * If we reach here, something genuinely failed.
+             */
+
+            throw new Error(
+                "The server could not process the test."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "FINAL TEST SUBMISSION ERROR:",
+                error
+            );
+
+            showError(
+                "Something went wrong while submitting. " +
+                "Please try again."
+            );
+
+
+            submitButton.disabled = false;
+            submitButton.textContent =
+                "Submit Focused Test";
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

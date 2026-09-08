@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About | Social Media Safety & Digital Footprint Awareness</title>
+
+    <style>
+
+        /* =========================
+           RESET
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================
+           BODY
+        ========================= */
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #05060d;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           BACKGROUND GLOW
+        ========================= */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            background: rgba(124, 58, 237, 0.12);
+
+            filter: blur(120px);
+
+            border-radius: 50%;
+
+            top: -150px;
+            left: -150px;
+
+            z-index: -1;
+        }
+
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 450px;
+            height: 450px;
+
+            background: rgba(168, 85, 247, 0.08);
+
+            filter: blur(120px);
+
+            border-radius: 50%;
+
+            right: -150px;
+            bottom: -150px;
+
+            z-index: -1;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+
+            width: 100%;
+
+            padding: 18px 6%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: rgba(5, 6, 13, 0.88);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 15px;
+
+            font-weight: 700;
+        }
+
+
+        .brand-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #7c3aed,
+                #a855f7
+            );
+
+            box-shadow:
+                0 0 20px rgba(124, 58, 237, 0.35);
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+        }
+
+
+        .nav-links a {
+
+            color: #a1a1aa;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+
+        .nav-links a:hover {
+
+            color: #ffffff;
+        }
+
+
+        .nav-links a.active {
+
+            color: #ffffff;
+        }
+
+
+        .start-btn {
+
+            padding: 10px 18px;
+
+            background: #7c3aed;
+
+            color: white !important;
+
+            border-radius: 9px;
+
+            font-weight: 600;
+        }
+
+
+        .start-btn:hover {
+
+            background: #8b5cf6;
+
+            box-shadow:
+                0 0 20px rgba(124, 58, 237, 0.4);
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+
+            width: 90%;
+
+            max-width: 1150px;
+
+            margin: auto;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            text-align: center;
+
+            padding: 80px 20px 55px;
+        }
+
+
+        .hero h1 {
+
+            font-size: clamp(35px, 5vw, 58px);
+
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+        }
+
+
+        .hero h1 span {
+
+            background: linear-gradient(
+                90deg,
+                #8b5cf6,
+                #c084fc
+            );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .hero p {
+
+            max-width: 750px;
+
+            margin: auto;
+
+            color: #a1a1aa;
+
+            font-size: 16px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================
+           ABOUT CARD
+        ========================= */
+
+        .about-card {
+
+            background: #101221;
+
+            border: 1px solid rgba(255, 255, 255, 0.07);
+
+            border-radius: 22px;
+
+            padding: 35px;
+
+            margin-bottom: 30px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .about-card h2 {
+
+            font-size: 25px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .about-card p {
+
+            color: #a1a1aa;
+
+            line-height: 1.8;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+
+            text-align: center;
+
+            margin: 65px 0 30px;
+        }
+
+
+        .section-title h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .section-title p {
+
+            color: #71717a;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FEATURE CARDS
+        ========================= */
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .card {
+
+            background: #101221;
+
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            border-radius: 18px;
+
+            padding: 27px;
+
+            transition: 0.3s;
+        }
+
+
+        .card:hover {
+
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(139, 92, 246, 0.45);
+
+            box-shadow:
+                0 15px 40px
+                rgba(124, 58, 237, 0.12);
+        }
+
+
+        .icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                rgba(124, 58, 237, 0.15);
+
+            font-size: 22px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .card h3 {
+
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .card p {
+
+            color: #a1a1aa;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           PROJECT FLOW
+        ========================= */
+
+        .flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .flow-card {
+
+            background: #101221;
+
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            border-radius: 16px;
+
+            padding: 22px 12px;
+
+            text-align: center;
+        }
+
+
+        .number {
+
+            width: 34px;
+
+            height: 34px;
+
+            margin: auto auto 12px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(124, 58, 237, 0.18);
+
+            color: #c4b5fd;
+
+            font-weight: bold;
+        }
+
+
+        .flow-card h4 {
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .flow-card p {
+
+            color: #71717a;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           OBJECTIVES
+        ========================= */
+
+        .objectives {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(124, 58, 237, 0.12),
+                    rgba(168, 85, 247, 0.04)
+                );
+
+            border:
+                1px solid rgba(139, 92, 246, 0.2);
+
+            border-radius: 22px;
+
+            padding: 35px;
+        }
+
+
+        .objective-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+
+            list-style: none;
+        }
+
+
+        .objective-list li {
+
+            display: flex;
+
+            gap: 12px;
+
+            color: #d4d4d8;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        .check {
+
+            min-width: 23px;
+
+            height: 23px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(124, 58, 237, 0.2);
+
+            color: #a78bfa;
+        }
+
+
+        /* =========================
+           TECHNOLOGY
+        ========================= */
+
+        .technology {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+        }
+
+
+        .tech {
+
+            padding: 11px 19px;
+
+            border-radius: 30px;
+
+            background: #101221;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            color: #c4b5fd;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           PROJECT INFORMATION
+        ========================= */
+
+        .project-info {
+
+            margin-top: 65px;
+
+            background: #101221;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.06);
+
+            border-radius: 22px;
+
+            padding: 35px;
+        }
+
+
+        .project-info h2 {
+
+            font-size: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .info {
+
+            padding: 17px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            border-radius: 12px;
+        }
+
+
+        .info small {
+
+            display: block;
+
+            color: #71717a;
+
+            font-size: 12px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .info strong {
+
+            color: #e4e4e7;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           CTA
+        ========================= */
+
+        .cta {
+
+            text-align: center;
+
+            margin: 70px 0;
+
+            padding: 50px 25px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(124, 58, 237, 0.17),
+                    rgba(168, 85, 247, 0.05)
+                );
+
+            border:
+                1px solid rgba(139, 92, 246, 0.2);
+        }
+
+
+        .cta h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .cta p {
+
+            color: #a1a1aa;
+
+            max-width: 650px;
+
+            margin: 0 auto 25px;
+
+            line-height: 1.7;
+        }
+
+
+        .cta a {
+
+            display: inline-block;
+
+            padding: 13px 23px;
+
+            background: #7c3aed;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+
+        .cta a:hover {
+
+            background: #8b5cf6;
+
+            box-shadow:
+                0 0 25px
+                rgba(124, 58, 237, 0.4);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            text-align: center;
+
+            padding: 25px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.06);
+
+            color: #52525b;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+
+            .nav-links a:not(.start-btn) {
+
+                display: none;
+            }
+
+
+            .cards {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .flow {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .objective-list {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            nav {
+
+                padding: 15px 5%;
+            }
+
+
+            .brand {
+
+                font-size: 12px;
+            }
+
+
+            .hero {
+
+                padding-top: 55px;
+            }
+
+
+            .about-card,
+            .objectives,
+            .project-info {
+
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav>
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🛡️
+            </div>
+
+            <span>
+                Social Media Safety
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+
+            <a href="{{ url_for('challenge') }}">
+                Challenge
+            </a>
+
+
+            <a href="{{ url_for('learn') }}">
+                Learn
+            </a>
+
+
+            <a href="{{ url_for('about') }}"
+               class="active">
+                About
+            </a>
+
+
+            <a href="{{ url_for('challenge') }}"
+               class="start-btn">
+                Start Now
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <h1>
+
+            Social Media Safety &
+
+            <br>
+
+            <span>
+                Digital Footprint Awareness
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Understanding how our online behaviour
+            affects privacy, security, digital footprints
+            and our future online reputation.
+
+        </p>
+
+    </section>
+
+
+
+    <main class="container">
+
+
+        <!-- =========================
+             ABOUT
+        ========================= -->
+
+        <section class="about-card">
+
+            <h2>
+                About the Project
+            </h2>
+
+
+            <p>
+
+                Social media has become an important part
+                of everyday life. People use social platforms
+                for communication, education, entertainment,
+                networking and sharing information. However,
+                careless online behaviour can expose users
+                to privacy and security risks.
+
+            </p>
+
+
+            <br>
+
+
+            <p>
+
+                This project focuses on creating awareness
+                about social media safety and digital footprints.
+                It helps users understand how posts, photos,
+                comments, likes, profiles, locations and other
+                online interactions contribute to their
+                digital footprint.
+
+            </p>
+
+
+            <br>
+
+
+            <p>
+
+                The project combines field-study research
+                with an interactive awareness platform.
+                Users can learn about online risks,
+                understand safer digital practices and
+                think about the possible long-term impact
+                of what they share online.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             FOCUS AREAS
+        ========================= -->
+
+        <div class="section-title">
+
+            <h2>
+                What We Focus On
+            </h2>
+
+
+            <p>
+
+                Important areas of social media safety
+                and digital awareness
+
+            </p>
+
+        </div>
+
+
+
+        <section class="cards">
+
+
+            <div class="card">
+
+                <div class="icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Privacy Settings
+                </h3>
+
+                <p>
+
+                    Understand profile visibility,
+                    audience controls and how privacy
+                    settings can help protect personal
+                    information.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    🔑
+                </div>
+
+                <h3>
+                    Password & 2FA
+                </h3>
+
+                <p>
+
+                    Learn why strong unique passwords
+                    and two-factor authentication are
+                    important for account security.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    🎣
+                </div>
+
+                <h3>
+                    Phishing Awareness
+                </h3>
+
+                <p>
+
+                    Recognize suspicious links, messages
+                    and urgent requests that may attempt
+                    to obtain sensitive information.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    👤
+                </div>
+
+                <h3>
+                    Fake Profiles
+                </h3>
+
+                <p>
+
+                    Learn how to identify suspicious
+                    profiles and verify unknown accounts
+                    before interacting with them.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    📍
+                </div>
+
+                <h3>
+                    Oversharing & Location
+                </h3>
+
+                <p>
+
+                    Understand how sharing locations,
+                    routines, travel plans and personal
+                    information can create unnecessary risks.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    🌐
+                </div>
+
+                <h3>
+                    Digital Footprint
+                </h3>
+
+                <p>
+
+                    Understand how posts, comments,
+                    photos, likes and other online
+                    activities can become part of a
+                    lasting digital trace.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    💬
+                </div>
+
+                <h3>
+                    Cyberbullying
+                </h3>
+
+                <p>
+
+                    Promote respectful communication
+                    and learn how to respond to
+                    harassment and harmful online behaviour.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    ⭐
+                </div>
+
+                <h3>
+                    Digital Reputation
+                </h3>
+
+                <p>
+
+                    Understand how online information
+                    can influence future academic,
+                    social and professional opportunities.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Responsible Behaviour
+                </h3>
+
+                <p>
+
+                    Encourage users to think before

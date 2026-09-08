@@ -1,0 +1,1076 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+.admin-page {
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+    padding:35px 22px 70px;
+    color:#f4f4f5;
+}
+
+.admin-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    margin-bottom:26px;
+}
+
+.admin-heading h1 {
+    margin:0 0 8px;
+    font-size:36px;
+    font-weight:800;
+}
+
+.admin-heading p {
+    margin:0;
+    color:#a7a5b8;
+    line-height:1.6;
+}
+
+.admin-user {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#101221;
+    border:1px solid #292d49;
+    padding:10px 14px;
+    border-radius:14px;
+}
+
+.admin-avatar {
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+}
+
+.admin-user-text strong {
+    display:block;
+    color:#fff;
+    font-size:14px;
+}
+
+.admin-user-text span {
+    display:block;
+    color:#9290a5;
+    font-size:12px;
+    margin-top:2px;
+}
+
+.logout-btn {
+    color:#d4d1df;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.admin-nav {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:28px;
+    padding:8px;
+    background:#0c0e19;
+    border:1px solid #252940;
+    border-radius:15px;
+}
+
+.admin-nav a {
+    text-decoration:none;
+    color:#aaa8ba;
+    padding:10px 15px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.admin-nav a:hover,
+.admin-nav a.active {
+    color:#fff;
+    background:#211936;
+}
+
+.section-title {
+    margin:36px 0 15px;
+}
+
+.section-title h2 {
+    margin:0 0 5px;
+    font-size:21px;
+}
+
+.section-title p {
+    margin:0;
+    color:#8f8da1;
+    font-size:13px;
+}
+
+.stats-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.stat-card {
+    background:#101221;
+    border:1px solid #292d49;
+    border-radius:18px;
+    padding:22px;
+}
+
+.stat-icon {
+    font-size:21px;
+    margin-bottom:12px;
+}
+
+.stat-number {
+    font-size:31px;
+    font-weight:800;
+}
+
+.stat-label {
+    color:#9997aa;
+    font-size:13px;
+    margin-top:8px;
+}
+
+.stat-note {
+    color:#6f6d7f;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.panel {
+    background:#101221;
+    border:1px solid #292d49;
+    border-radius:20px;
+    padding:24px;
+}
+
+.grid-2 {
+    display:grid;
+    grid-template-columns:1.25fr 1fr;
+    gap:18px;
+}
+
+.grid-3 {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.chart-wrap {
+    position:relative;
+    width:100%;
+    height:175px;
+}
+
+.chart-wrap.small {
+    height:155px;
+}
+
+.chart-wrap.large {
+    height:205px;
+}
+
+.chart-wrap canvas {
+    width:100% !important;
+    height:100% !important;
+}
+
+.chart-row {
+    margin-bottom:17px;
+}
+
+.chart-head {
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:7px;
+}
+
+.chart-head span:first-child {
+    color:#e8e6ee;
+    font-size:13px;
+    font-weight:700;
+}
+
+.chart-head span:last-child {
+    color:#c084fc;
+    font-weight:800;
+    font-size:13px;
+}
+
+.bar {
+    width:100%;
+    height:9px;
+    border-radius:999px;
+    overflow:hidden;
+    background:#1c1f31;
+}
+
+.bar-fill {
+    height:100%;
+    width:var(--width);
+    border-radius:inherit;
+    background:linear-gradient(90deg,#7c3aed,#a855f7);
+}
+
+.risk-fill {
+    background:linear-gradient(90deg,#ef4444,#f59e0b);
+}
+
+.good-fill {
+    background:linear-gradient(90deg,#22c55e,#86efac);
+}
+
+.data-source {
+    padding:14px 16px;
+    border-radius:13px;
+    background:rgba(168,85,247,.07);
+    border:1px solid rgba(168,85,247,.22);
+    color:#b9b6c8;
+    font-size:13px;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.data-source strong {
+    color:#fff;
+}
+
+.awareness-card {
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.awareness-score {
+    width:120px;
+    height:120px;
+    flex:0 0 120px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle,#101221 60%,transparent 61%),
+        conic-gradient(#8b5cf6 {{ survey.awareness_score }}%,#25283c {{ survey.awareness_score }}%);
+    font-size:28px;
+    font-weight:800;
+}
+
+.awareness-text h3 {
+    margin:0 0 7px;
+    font-size:20px;
+}
+
+.awareness-text p {
+    margin:0;
+    color:#9997aa;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.category {
+    padding:14px 0;
+    border-bottom:1px solid #25283c;
+}
+
+.category:last-child {
+    border-bottom:none;
+}
+
+.category-top {
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:7px;
+}
+
+.category-name {
+    font-weight:700;
+}
+
+.category-score {
+    color:#c084fc;
+    font-weight:800;
+}
+
+.category-note {
+    color:#777487;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.risk-item,
+.finding,
+.action {
+    background:#0c0e19;
+    border:1px solid #25283c;
+    border-radius:16px;
+    padding:18px;
+}
+
+.risk-item {
+    margin-bottom:12px;
+}
+
+.risk-item:last-child {
+    margin-bottom:0;
+}
+
+.risk-item h3,
+.finding h3,
+.action h3 {
+    margin:0 0 7px;
+    color:#fff;
+    font-size:14px;
+}
+
+.risk-meta {
+    display:flex;
+    justify-content:space-between;
+    color:#9290a5;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.risk-meta strong {
+    color:#f87171;
+}
+
+.finding p,
+.action p {
+    margin:0;
+    color:#9997aa;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.finding-grid,
+.action-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.finding-icon,
+.action-icon {
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.empty {
+    text-align:center;
+    padding:45px 20px;
+    color:#888699;
+}
+
+.notice {
+    padding:18px;
+    border-radius:15px;
+    background:rgba(245,158,11,.07);
+    border:1px solid rgba(245,158,11,.22);
+    color:#c8b98e;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.footer {
+    margin-top:45px;
+    padding-top:20px;
+    border-top:1px solid #25283c;
+    display:flex;
+    justify-content:space-between;
+    color:#777487;
+    font-size:12px;
+}
+
+@media(max-width:900px) {
+    .stats-grid,
+    .finding-grid,
+    .action-grid {
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid-2 {
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px) {
+    .admin-header {
+        flex-direction:column;
+    }
+
+    .stats-grid,
+    .finding-grid,
+    .action-grid,
+    .grid-3 {
+        grid-template-columns:1fr;
+    }
+
+    .awareness-card {
+        flex-direction:column;
+        text-align:center;
+    }
+}
+</style>
+
+<div class="admin-page">
+
+    <div class="admin-header">
+        <div class="admin-heading">
+            <h1>Admin Dashboard</h1>
+            <p>
+                Google Form responses → Analysis → Problems → Awareness Action
+            </p>
+        </div>
+
+        <div class="admin-user">
+            <div class="admin-avatar">🛡️</div>
+
+            <div class="admin-user-text">
+                <strong>{{ session.get("admin_username", "Administrator") }}</strong>
+                <span>Safety Administrator</span>
+            </div>
+
+            <a href="{{ url_for('admin_logout') }}" class="logout-btn">
+                Logout
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-nav">
+        <a href="{{ url_for('admin_dashboard') }}" class="active">📊 Dashboard</a>
+        <a href="#overview">🎯 Overview</a>
+        <a href="#categories">🛡️ Categories</a>
+        <a href="#risks">⚠️ Risk Behaviors</a>
+        <a href="#findings">🔎 Findings</a>
+        <a href="#actions">⚡ Actions</a>
+        <a href="#responses">📋 Responses</a>
+    </div>
+
+    {% if not survey.available %}
+
+        <div class="notice">
+            <strong>Google Form data unavailable.</strong><br>
+            {{ survey.data_note }}
+        </div>
+
+    {% else %}
+
+        <div class="data-source">
+            <strong>Live survey dataset:</strong>
+            {{ survey.file_name }} —
+            {{ survey.total }} real Google Form responses.
+            The dashboard calculates its statistics directly from this file;
+            no fake survey records are added.
+        </div>
+
+        <!-- KEY STATISTICS -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-number">{{ survey.total }}</div>
+                <div class="stat-label">Google Form responses</div>
+                <div class="stat-note">Actual collected responses</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-number">{{ survey.awareness_score }}%</div>
+                <div class="stat-label">Overall awareness</div>
+                <div class="stat-note">{{ survey.awareness_level }}</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-number">
+                    {{ survey.risky_behaviors[0].risk_pct if survey.risky_behaviors else 0 }}%
+                </div>
+                <div class="stat-label">Highest risky-response rate</div>
+                <div class="stat-note">
+                    Based on the most problematic objective question
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-number">
+                    {{ survey.learning_topics|length }}
+                </div>
+                <div class="stat-label">Learning topics selected</div>
+                <div class="stat-note">From the actual survey</div>
+            </div>
+
+        </div>
+
+        <!-- FOCUSED TEST / LEARNING IMPACT -->
+        <div class="section-title" id="learning-impact">
+            <h2>🎯 Learning Impact</h2>
+            <p>Compare each participant's weakest-area score before learning with their focused 5-question test score.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🧪</div>
+                <div class="stat-number">{{ focused_completed }}</div>
+                <div class="stat-label">Focused tests completed</div>
+                <div class="stat-note">{{ focused_completion_rate }}% of challenge participants</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-number">{{ focused_average }}%</div>
+                <div class="stat-label">Average focused score</div>
+                <div class="stat-note">Across completed 5-question tests</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⬆️</div>
+                <div class="stat-number">{% if average_improvement >= 0 %}+{% endif %}{{ average_improvement }}%</div>
+                <div class="stat-label">Average improvement</div>
+                <div class="stat-note">Focused score vs weakest-area score</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🔎</div>
+                <div class="stat-number">{{ average_previous_score }}%</div>
+                <div class="stat-label">Average score before learning</div>
+                <div class="stat-note">Weakest category from main challenge</div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:18px;">
+            <div class="chart-panel">
+                <h3 class="chart-title">Before vs Focused Test</h3>
+                <p class="chart-subtitle">Average score in the identified weak area</p>
+                <div class="chart-wrap small"><canvas id="improvementChart"></canvas></div>
+            </div>
+
+            <div class="chart-panel" style="padding:18px;">
+                <h3 class="chart-title">Participant Focused-Test Results</h3>
+                <p class="chart-subtitle">Latest completed tests — real website challenge data</p>
+
+                {% if focused_participants %}
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;min-width:520px;">
+                            <thead>
+                                <tr style="border-bottom:1px solid #25283c;">
+                                    <th style="padding:9px 6px;text-align:left;color:#c084fc;font-size:11px;">Participant</th>
+                                    <th style="padding:9px 6px;text-align:center;color:#c084fc;font-size:11px;">Main</th>
+                                    <th style="padding:9px 6px;text-align:left;color:#c084fc;font-size:11px;">Weak Area</th>
+                                    <th style="padding:9px 6px;text-align:center;color:#c084fc;font-size:11px;">Before</th>
+                                    <th style="padding:9px 6px;text-align:center;color:#c084fc;font-size:11px;">Focused</th>
+                                    <th style="padding:9px 6px;text-align:center;color:#c084fc;font-size:11px;">Change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for person in focused_participants[:10] %}
+                                    <tr style="border-bottom:1px solid #1d2033;">
+                                        <td style="padding:9px 6px;color:#fff;font-size:12px;font-weight:700;">{{ person.name }}</td>
+                                        <td style="padding:9px 6px;text-align:center;color:#aaa8b8;font-size:12px;">{{ person.main_score }}%</td>
+                                        <td style="padding:9px 6px;color:#c9c6d5;font-size:11px;">{{ person.weakest_area }}</td>
+                                        <td style="padding:9px 6px;text-align:center;color:#aaa8b8;font-size:12px;">{{ person.previous_score }}%</td>
+                                        <td style="padding:9px 6px;text-align:center;color:#a855f7;font-size:12px;font-weight:800;">{{ person.focused_score }}%</td>
+                                        <td style="padding:9px 6px;text-align:center;font-size:12px;font-weight:800;{% if person.improvement >= 0 %}color:#4ade80;{% else %}color:#f87171;{% endif %}">
+                                            {% if person.improvement >= 0 %}+{% endif %}{{ person.improvement }}%
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty" style="padding:35px 10px;">
+                        No focused tests have been completed yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div class="section-title" id="overview">
+            <h2>Overall Awareness & Performance</h2>
+            <p>How the surveyed group performed across the actual safety questions.</p>
+        </div>
+
+        <div class="grid-2">
+
+            <div class="panel">
+                <div class="awareness-card">
+                    <div class="awareness-score">
+                        {{ survey.awareness_score }}%
+                    </div>
+
+                    <div class="awareness-text">
+                        <h3>{{ survey.awareness_level }}</h3>
+                        <p>
+                            The score is calculated from the percentage of
+                            correct responses to the objective cyber-safety
+                            questions in the Google Form.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Most Used Platforms</h3>
+                <p class="category-note">
+                    Response percentage among {{ survey.total }} respondents.
+                </p>
+
+                {% for label, count in survey.distributions["Platform"].items() %}
+                    <div class="chart-row">
+                        <div class="chart-head">
+                            <span>{{ label }}</span>
+                            <span>{{ ((count / survey.total) * 100)|round(1) }}%</span>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar-fill"
+                                 style="--width:{{ (count / survey.total * 100)|round(1) }}%;"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- CATEGORIES -->
+        <div class="section-title" id="categories">
+            <h2>Five Safety Areas</h2>
+            <p>Scores are derived only from questions that actually exist in the Google Form.</p>
+        </div>
+
+        <div class="panel">
+
+            {% for category, score in survey.category_scores.items() %}
+
+                <div class="category">
+
+                    <div class="category-top">
+                        <span class="category-name">{{ category }}</span>
+
+                        {% if score is not none %}
+                            <span class="category-score">{{ score }}%</span>
+                        {% else %}
+                            <span class="category-score">No data</span>
+                        {% endif %}
+                    </div>
+
+                    {% if score is not none %}
+                        <div class="bar">
+                            <div class="bar-fill"
+                                 style="--width:{{ score }}%;"></div>
+                        </div>
+
+                        <div class="category-note">
+                            {{ survey.category_risks[category] }}% calculated response risk.
+                        </div>
+                    {% endif %}
+
+                    {% if category == "Location Safety" %}
+                        <div class="category-note">
+                            {{ survey.location_note }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- RISKY BEHAVIORS -->
+        <div class="section-title" id="risks">
+            <h2>Most Common Risky Behaviors</h2>
+            <p>Ranked by the percentage of respondents who did not choose the safer answer.</p>
+        </div>
+
+        <div class="grid-2">
+
+            <div class="panel">
+
+                {% for item in survey.risky_behaviors %}
+
+                    <div class="risk-item">
+
+                        <h3>{{ loop.index }}. {{ item.label }}</h3>
+
+                        <div class="risk-meta">
+                            <span>
+                                {{ item.wrong }} of {{ survey.total }} responses
+                            </span>
+                            <strong>{{ item.risk_pct }}% risky</strong>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar-fill risk-fill"
+                                 style="--width:{{ item.risk_pct }}%;"></div>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <div class="empty">No objective survey questions available.</div>
+                {% endfor %}
+
+            </div>
+
+            <div class="panel">
+
+                <h3>Privacy Settings</h3>
+
+                {% for label, count in survey.privacy_check.items() %}
+
+                    <div class="chart-row">
+                        <div class="chart-head">
+                            <span>{{ label }}</span>
+                            <span>{{ ((count / survey.total) * 100)|round(1) }}%</span>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar-fill"
+                                 style="--width:{{ (count / survey.total * 100)|round(1) }}%;"></div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+                <h3 style="margin-top:28px;">Confidence Against Threats</h3>
+
+                {% for label, count in survey.confidence.items() %}
+
+                    <div class="chart-row">
+                        <div class="chart-head">
+                            <span>{{ label }}</span>
+                            <span>{{ ((count / survey.total) * 100)|round(1) }}%</span>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar-fill"
+                                 style="--width:{{ (count / survey.total * 100)|round(1) }}%;"></div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- VISUAL ANALYTICS -->
+        <div class="section-title" id="charts">
+            <h2>Survey Analytics</h2>
+            <p>Visual analysis of the real Google Form responses.</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="chart-panel">
+                <h3 class="chart-title">Safety Awareness</h3>
+                <p class="chart-subtitle">Overall correct-response percentage</p>
+                <div class="chart-wrap small"><canvas id="awarenessChart"></canvas></div>
+            </div>
+            <div class="chart-panel">
+                <h3 class="chart-title">Platform Usage</h3>
+                <p class="chart-subtitle">Number of respondents per platform</p>
+                <div class="chart-wrap small"><canvas id="platformChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:18px;">
+            <div class="chart-panel">
+                <h3 class="chart-title">Safety Category Performance</h3>
+                <p class="chart-subtitle">Privacy, security, oversharing, location and reputation</p>
+                <div class="chart-wrap large"><canvas id="categoryChart"></canvas></div>
+            </div>
+            <div class="chart-panel">
+                <h3 class="chart-title">Risky Behaviors</h3>
+                <p class="chart-subtitle">Percentage of respondents choosing the risky answer</p>
+                <div class="chart-wrap large"><canvas id="riskChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:18px;">
+            <div class="chart-panel">
+                <h3 class="chart-title">Privacy Settings</h3>
+                <p class="chart-subtitle">How respondents manage privacy</p>
+                <div class="chart-wrap"><canvas id="privacyChart"></canvas></div>
+            </div>
+            <div class="chart-panel">
+                <h3 class="chart-title">Confidence</h3>
+                <p class="chart-subtitle">Confidence against online threats</p>
+                <div class="chart-wrap"><canvas id="confidenceChart"></canvas></div>
+            </div>
+            <div class="chart-panel">
+                <h3 class="chart-title">Age Groups</h3>
+                <p class="chart-subtitle">Respondent distribution</p>
+                <div class="chart-wrap"><canvas id="ageChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:18px;">
+            <div class="chart-panel">
+                <h3 class="chart-title">Learning Topics</h3>
+                <p class="chart-subtitle">Topics respondents want to learn more about</p>
+                <div class="chart-wrap large"><canvas id="learningChart"></canvas></div>
+            </div>
+            <div class="chart-panel">
+                <h3 class="chart-title">Digital Footprint Awareness</h3>
+                <p class="chart-subtitle">Whether respondents became more aware after the survey</p>
+                <div class="chart-wrap"><canvas id="footprintChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- FINDINGS -->
+        <div class="section-title" id="findings">
+            <h2>Important Findings</h2>
+            <p>These findings are generated from the actual response patterns.</p>
+        </div>
+
+        <div class="finding-grid">
+
+            {% for finding in survey.findings %}
+
+                <div class="finding">
+                    <div class="finding-icon">🔎</div>
+                    <h3>{{ finding.title }}</h3>
+                    <p>{{ finding.text }}</p>
+                </div>
+
+            {% else %}
+
+                <div class="finding">
+                    <div class="finding-icon">ℹ️</div>
+                    <h3>No findings yet</h3>
+                    <p>More response data is needed for analysis.</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- LEARNING TOPICS -->
+        <div class="section-title">
+            <h2>What Respondents Want to Learn</h2>
+            <p>Directly taken from the Google Form's learning-needs question.</p>
+        </div>
+
+        <div class="panel">
+
+            {% for label, count in survey.learning_topics.items() %}
+
+                <div class="chart-row">
+                    <div class="chart-head">
+                        <span>{{ label }}</span>
+                        <span>{{ count }} responses ({{ ((count / survey.total) * 100)|round(1) }}%)</span>
+                    </div>
+
+                    <div class="bar">
+                        <div class="bar-fill"
+                             style="--width:{{ (count / survey.total * 100)|round(1) }}%;"></div>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="empty">No learning-topic responses found.</div>
+            {% endfor %}
+
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="section-title" id="actions">
+            <h2>Recommended Awareness Actions</h2>
+            <p>Actions are generated from the actual problems found in the survey.</p>
+        </div>
+
+        <div class="action-grid">
+
+            {% for action in survey.actions %}
+
+                <div class="action">
+                    <div class="action-icon">⚡</div>
+                    <h3>{{ action.title }}</h3>
+                    <p>{{ action.text }}</p>
+                </div>
+
+            {% else %}
+
+                <div class="action">
+                    <div class="action-icon">ℹ️</div>
+                    <h3>Collect more data</h3>
+                    <p>More Google Form responses are needed before recommending targeted actions.</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- RESPONSE DISTRIBUTION -->
+        <div class="section-title">
+            <h2>Response Percentages</h2>
+            <p>Useful distributions from the real survey.</p>
+        </div>
+
+        <div class="grid-2">
+
+            <div class="panel">
+                <h3>Post-Survey Digital Footprint Awareness</h3>
+
+                {% for label, count in survey.footprint.items() %}
+
+                    <div class="chart-row">
+                        <div class="chart-head">
+                            <span>{{ label }}</span>
+                            <span>{{ ((count / survey.total) * 100)|round(1) }}%</span>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar-fill good-fill"
+                                 style="--width:{{ (count / survey.total * 100)|round(1) }}%;"></div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+            <div class="panel">
+                <h3>Age Group Distribution</h3>
+
+                {% for label, count in survey.distributions["Age group"].items() %}
+
+                    <div class="chart-row">
+                        <div class="chart-head">
+                            <span>{{ label }}</span>
+                            <span>{{ ((count / survey.total) * 100)|round(1) }}%</span>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar-fill"
+                                 style="--width:{{ (count / survey.total * 100)|round(1) }}%;"></div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+        (() => {
+            const total = Number({{ survey.total|tojson }} || 0);
+            const awareness = Number({{ survey.awareness_score|tojson }} || 0);
+            const platform = {{ survey.distributions.get("Platform", {})|tojson }};
+            const age = {{ survey.distributions.get("Age group", {})|tojson }};
+            const privacy = {{ survey.privacy_check|tojson }};
+            const confidence = {{ survey.confidence|tojson }};
+            const learning = {{ survey.learning_topics|tojson }};
+            const footprint = {{ survey.footprint|tojson }};
+            const categories = {{ survey.category_scores|tojson }};
+            const risks = {{ survey.risky_behaviors|tojson }};
+            const focusedBefore = Number({{ average_previous_score|tojson }} || 0);
+            const focusedAfter = Number({{ focused_average|tojson }} || 0);
+
+            const labels = o => Object.keys(o || {});
+            const values = o => Object.values(o || {}).map(Number);
+            const palette = ['#8b5cf6','#a855f7','#c084fc','#7c3aed','#6d28d9','#d8b4fe','#9333ea'];
+            const base = {
+                responsive:true, maintainAspectRatio:false,
+                plugins:{legend:{labels:{color:'#c9c6d5',font:{size:11}}}}
+            };
+            const barScales = {
+                x:{beginAtZero:true,grid:{color:'#25283c'},ticks:{color:'#9290a5'}},
+                y:{grid:{display:false},ticks:{color:'#c9c6d5'}}
+            };
+
+            const improvementCanvas = document.getElementById('improvementChart');
+            if (improvementCanvas) {
+                new Chart(improvementCanvas, {
+                    type:'bar',
+                    data:{
+                        labels:['Before learning','Focused test'],
+                        datasets:[{
+                            label:'Average score %',
+                            data:[focusedBefore,focusedAfter],
+                            backgroundColor:['#6d28d9','#a855f7'],
+                            borderRadius:7
+                        }]
+                    },
+                    options:{
+                        ...base,
+                        scales:{
+                            x:{grid:{display:false},ticks:{color:'#c9c6d5'}},
+                            y:{beginAtZero:true,max:100,grid:{color:'#25283c'},ticks:{color:'#9290a5',callback:v=>v+'%'}}
+                        },
+                        plugins:{...base.plugins,legend:{display:false}}
+                    }
+                });
+            }
+
+            new Chart(document.getElementById('awarenessChart'), {
+                type:'doughnut',
+                data:{labels:['Aware / correct','Needs improvement'],datasets:[{data:[awareness,Math.max(0,100-awareness)],backgroundColor:['#8b5cf6','#25283c'],borderWidth:0}]},
+                options:{...base,cutout:'70%',plugins:{...base.plugins,legend:{display:true}}}
+            });
+
+            new Chart(document.getElementById('platformChart'), {
+                type:'pie',data:{labels:labels(platform),datasets:[{data:values(platform),backgroundColor:palette,borderColor:'#101221',borderWidth:2}]},options:base
+            });
+
+            new Chart(document.getElementById('categoryChart'), {
+                type:'bar',data:{labels:labels(categories),datasets:[{label:'Awareness %',data:values(categories).map(v => v || 0),backgroundColor:'#8b5cf6',borderRadius:7}]},
+                options:{...base,indexAxis:'y',scales:{x:{...barScales.x,max:100,ticks:{color:'#9290a5',callback:v=>v+'%'}},y:barScales.y}}
+            });
+
+            new Chart(document.getElementById('riskChart'), {
+                type:'bar',data:{labels:risks.map(r=>r.label),datasets:[{label:'Risky %',data:risks.map(r=>Number(r.risk_pct)||0),backgroundColor:'#ef4444',borderRadius:7}]},
+                options:{...base,indexAxis:'y',scales:{x:{...barScales.x,max:100,ticks:{color:'#9290a5',callback:v=>v+'%'}},y:barScales.y}}
+            });
+
+            new Chart(document.getElementById('privacyChart'), {
+                type:'doughnut',data:{labels:labels(privacy),datasets:[{data:values(privacy),backgroundColor:palette,borderColor:'#101221',borderWidth:2}]},options:base
+            });
+
+            new Chart(document.getElementById('confidenceChart'), {
+                type:'doughnut',data:{labels:labels(confidence),datasets:[{data:values(confidence),backgroundColor:['#22c55e','#3b82f6','#f59e0b','#ef4444'],borderColor:'#101221',borderWidth:2}]},options:base
+            });
+
+            new Chart(document.getElementById('ageChart'), {
+                type:'pie',data:{labels:labels(age),datasets:[{data:values(age),backgroundColor:palette,borderColor:'#101221',borderWidth:2}]},options:base
+            });
+
+            new Chart(document.getElementById('learningChart'), {
+                type:'bar',data:{labels:labels(learning),datasets:[{label:'Responses',data:values(learning),backgroundColor:'#3b82f6',borderRadius:7}]},
+                options:{...base,indexAxis:'y',scales:{x:{...barScales.x,beginAtZero:true, ticks:{color:'#9290a5',stepSize:1}},y:barScales.y}}
+            });
+
+            new Chart(document.getElementById('footprintChart'), {
+                type:'doughnut',data:{labels:labels(footprint),datasets:[{data:values(footprint),backgroundColor:['#22c55e','#ef4444','#f59e0b','#8b5cf6'],borderColor:'#101221',borderWidth:2}]},options:base
+            });
+        })();
+        </script>
+    {% endif %}
+
+    <div class="footer">
+        <span><strong>Social Media Safety</strong> — Administrator Panel</span>
+        <span>Survey → Analysis → Awareness Action</span>
+    </div>
+
+</div>
+
+{% endblock %}

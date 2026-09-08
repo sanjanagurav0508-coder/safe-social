@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}
+    Report an Incident
+{% endblock %}
+{% block content %}
+    <section class="page">
+        <h1>
+            <i class="fa-solid fa-flag">
+            </i>
+            Report a Social Media Safety Incident
+        </h1>
+        <p>
+            This is an educational reporting simulation for the project — it shows how a real
+    platform-side reporting mechanism could be structured. Reports are stored locally for
+    academic demonstration only.
+        </p>
+        {% if submitted %}
+            <div class="alert-success">
+                <i class="fa-solid fa-circle-check">
+                </i>
+                Your report has been logged. Thank you for helping keep the community safe.
+            </div>
+            <a href="{{ url_for('report_incident') }}" class="btn">
+                Submit Another Report
+            </a>
+        {% else %}
+            <form method="POST" class="survey-form">
+                <label>
+                    Type of Incident
+                </label>
+                <select name="incident_type" required>
+                    <option value="">
+                        Select
+                    </option>
+                    <option value="Cyberbullying">
+                        Cyberbullying / Harassment
+                    </option>
+                    <option value="Phishing">
+                        Phishing Attempt
+                    </option>
+                    <option value="Fake Profile">
+                        Fake Profile / Impersonation
+                    </option>
+                    <option value="Doxxing">
+                        Doxxing / Privacy Violation
+                    </option>
+                    <option value="Scam">
+                        Scam / Fraud
+                    </option>
+                    <option value="Other">
+                        Other
+                    </option>
+                </select>
+                <label>
+                    Platform
+                </label>
+                <select name="platform" required>
+                    <option value="">
+                        Select
+                    </option>
+                    <option value="Instagram">
+                        Instagram
+                    </option>
+                    <option value="WhatsApp">
+                        WhatsApp
+                    </option>
+                    <option value="Facebook">
+                        Facebook
+                    </option>
+                    <option value="Twitter/X">
+                        Twitter / X
+                    </option>
+                    <option value="Snapchat">
+                        Snapchat
+                    </option>
+                    <option value="Other">
+                        Other
+                    </option>
+                </select>
+                <label>
+                    Description
+                </label>
+                <textarea name="description" rows="5" placeholder="Briefly describe what happened..." required>
+                </textarea>
+                <button type="submit" class="btn">
+                    <i class="fa-solid fa-paper-plane">
+                    </i>
+                    Submit Report
+                </button>
+            </form>
+        {% endif %}
+    </section>
+{% endblock %}

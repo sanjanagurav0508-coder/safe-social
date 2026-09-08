@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Learn — SafeSocial{% endblock %}
+{% block content %}
+
+<div class="page" style="padding-left:0; padding-right:0;">
+    <h1>Learn the Basics</h1>
+    <p>Short, practical explanations — no walls of text. Tap a card to expand it.</p>
+
+    <div class="learn-grid" id="learnGrid"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+var TOPICS = [
+  {icon:"🔑", title:"Password Safety",
+    what:"Using strong, unique passwords for each account.",
+    why:"Reused or weak passwords mean one leak can unlock everything you own online.",
+    do:"Use a different password per account, at least 12 characters, mixing letters, numbers and symbols."},
+  {icon:"🔒", title:"Two-Factor Authentication",
+    what:"A second verification step beyond just your password, like a code sent to your phone.",
+    why:"Even if your password leaks, 2FA stops most account takeovers.",
+    do:"Turn on 2FA for your email, banking, and social accounts today — it takes two minutes."},
+  {icon:"🎭", title:"Fake Profiles",
+    what:"Accounts pretending to be someone else, or entirely fabricated identities.",
+    why:"Fake profiles are used to scam, impersonate, or build trust before an attack.",
+    do:"Check account age, mutual connections, and posting history before accepting requests."},
+  {icon:"🎣", title:"Phishing",
+    what:"Fake messages or links designed to trick you into giving up information.",
+    why:"Phishing is the most common way accounts get hacked — more than direct attacks.",
+    do:"Never click links from unexpected messages. Verify with the sender through another channel first."},
+  {icon:"📢", title:"Oversharing",
+    what:"Posting more personal detail than necessary — routines, plans, documents.",
+    why:"Small details add up into a detailed picture of your life, routine, and location.",
+    do:"Before posting, ask what a stranger could learn from it, and post later rather than live."},
+  {icon:"📍", title:"Location Sharing",
+    what:"Tagging your exact location in posts or stories.",
+    why:"Real-time location reveals where you are — and where you aren't (like your empty home).",
+    do:"Turn off geotagging, and share location-based posts after you've left, not during."},
+  {icon:"💬", title:"Cyberbullying",
+    what:"Repeated harassment, threats, or humiliation carried out online.",
+    why:"It can happen to anyone and often escalates if ignored.",
+    do:"Don't engage, save evidence, block and report, and tell a trusted adult or friend."},
+  {icon:"🛡️", title:"Privacy Settings",
+    what:"The controls that decide who can see your posts, profile, and activity.",
+    why:"Default settings are often more open than you'd expect.",
+    do:"Review your settings every few months — platforms change defaults over time."},
+  {icon:"🗺️", title:"Digital Footprint",
+    what:"The full trail of data you leave behind through your online activity.",
+    why:"It's larger and more permanent than most people realize — old posts don't just disappear.",
+    do:"Periodically search yourself online and review what old content is still visible."},
+  {icon:"🏅", title:"Digital Reputation",
+    what:"How your online presence is perceived by others — friends, employers, colleges.",
+    why:"Employers and institutions increasingly check social profiles before decisions.",
+    do:"Regularly review your public posts through the eyes of someone who doesn't know you."}
+];
+
+var grid = document.getElementById("learnGrid");
+for (var i = 0; i < TOPICS.length; i++){
+  (function(topic){
+    var card = document.createElement("div");
+    card.className = "learn-card";
+    card.innerHTML =
+      '<div class="learn-card-head">' +
+        '<h3>' + topic.icon + ' ' + topic.title + '</h3>' +
+        '<i class="fa-solid fa-chevron-down chev"></i>' +
+      '</div>' +
+      '<div class="learn-card-body">' +
+        '<b>What it is</b><p>' + topic.what + '</p>' +
+        '<b>Why it matters</b><p>' + topic.why + '</p>' +
+        '<b>What you should do</b><p>' + topic.do + '</p>' +
+      '</div>';
+    card.querySelector(".learn-card-head").onclick = function(){
+      card.classList.toggle("open");
+    };
+    grid.appendChild(card);
+  })(TOPICS[i]);
+}
+</script>
+{% endblock %}

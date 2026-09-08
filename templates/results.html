@@ -1,0 +1,970 @@
+{% extends "base.html" %}
+
+{% block title %}
+Your Challenge Results
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.results-page {
+    width: 100%;
+    padding: 55px 20px 80px;
+    background: #05060D;
+    color: #FFFFFF;
+}
+
+.results-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.results-header h1 {
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.results-header p {
+    color: #A1A1AA !important;
+}
+
+/* CARDS */
+
+.result-card {
+    background: #101221;
+    border: 1px solid #232544;
+    border-radius: 18px;
+    padding: 35px;
+    margin-bottom: 24px;
+}
+
+/* SCORE */
+
+.score-section {
+    text-align: center;
+}
+
+.score-circle {
+    width: 160px;
+    height: 160px;
+
+    margin: 0 auto 22px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        conic-gradient(
+            #A855F7 {{ result['score'] }}%,
+            #232544 {{ result['score'] }}%
+        );
+
+    position: relative;
+}
+
+.score-circle::before {
+    content: "";
+
+    position: absolute;
+
+    width: 125px;
+    height: 125px;
+
+    border-radius: 50%;
+
+    background: #101221;
+}
+
+.score-number {
+    position: relative;
+
+    color: #FFFFFF !important;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+}
+
+.score-number span {
+    color: #A1A1AA !important;
+    font-size: 14px;
+}
+
+.score-section h2 {
+    color: #FFFFFF !important;
+}
+
+.result-description {
+    max-width: 650px;
+    margin: 12px auto 0;
+
+    color: #A1A1AA !important;
+
+    line-height: 1.7;
+}
+
+.user-info {
+    margin-top: 20px;
+
+    color: #71717A !important;
+}
+
+.user-info strong {
+    color: #FFFFFF !important;
+}
+
+/* RISK */
+
+.risk {
+    display: inline-block;
+
+    padding: 7px 14px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.risk-low {
+    color: #22C55E !important;
+    background: rgba(34,197,94,.1);
+    border: 1px solid #22C55E;
+}
+
+.risk-moderate {
+    color: #F5A623 !important;
+    background: rgba(245,166,35,.1);
+    border: 1px solid #F5A623;
+}
+
+.risk-high {
+    color: #EF4444 !important;
+    background: rgba(239,68,68,.1);
+    border: 1px solid #EF4444;
+}
+
+/* CATEGORY */
+
+.section-title {
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.category-card {
+    background: #0B0D18;
+
+    border: 1px solid #232544;
+    border-radius: 13px;
+
+    padding: 19px;
+}
+
+.category-top {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+.category-name {
+    color: #FFFFFF !important;
+    font-weight: 600;
+}
+
+.category-value {
+    color: #A855F7 !important;
+    font-weight: 700;
+}
+
+.category-bar {
+    width: 100%;
+    height: 8px;
+
+    background: #232544;
+
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.category-fill {
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7C3AED,
+            #A855F7
+        );
+
+    border-radius: 20px;
+}
+
+/* WEAKEST */
+
+.weak-area {
+    margin-top: 22px;
+
+    padding: 22px;
+
+    background: rgba(168,85,247,.07);
+
+    border: 1px solid rgba(168,85,247,.3);
+
+    border-radius: 14px;
+}
+
+.weak-area-title {
+    color: #A855F7 !important;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    margin-bottom: 8px;
+}
+
+.weak-area p {
+    color: #A1A1AA !important;
+    line-height: 1.7;
+}
+
+.weak-score {
+    color: #FFFFFF !important;
+    font-weight: 800;
+}
+
+/* IMPROVE */
+
+.improve-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.improve-list li {
+    padding: 13px 0;
+
+    border-bottom: 1px solid #232544;
+
+    color: #A1A1AA !important;
+}
+
+.improve-list li:last-child {
+    border-bottom: none;
+}
+
+.improve-list li::before {
+    content: "✓";
+
+    color: #A855F7;
+
+    font-weight: 800;
+
+    margin-right: 10px;
+}
+
+/* LEARN */
+
+.learn-box {
+    background: #0B0D18;
+
+    border: 1px solid #292C43;
+
+    border-radius: 14px;
+
+    padding: 24px;
+}
+
+.learn-box h3 {
+    color: #FFFFFF !important;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 21px;
+}
+
+.learn-box p {
+    color: #A1A1AA !important;
+    line-height: 1.7;
+}
+
+.example-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+
+    margin-top: 18px;
+}
+
+.example {
+    padding: 17px;
+
+    border-radius: 12px;
+}
+
+.example.safe {
+    background: rgba(34,197,94,.08);
+    border: 1px solid rgba(34,197,94,.35);
+}
+
+.example.unsafe {
+    background: rgba(239,68,68,.08);
+    border: 1px solid rgba(239,68,68,.35);
+}
+
+.example strong {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.example.safe strong {
+    color: #22C55E !important;
+}
+
+.example.unsafe strong {
+    color: #EF4444 !important;
+}
+
+.example p {
+    margin: 0;
+    font-size: 13.5px;
+}
+
+/* TEST */
+
+.focused-test {
+    margin-top: 25px;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124,58,237,.14),
+            rgba(168,85,247,.05)
+        );
+
+    border: 1px solid rgba(168,85,247,.35);
+
+    border-radius: 15px;
+}
+
+.focused-test h3 {
+    color: #FFFFFF !important;
+
+    font-size: 21px;
+}
+
+.focused-test p {
+    color: #A1A1AA !important;
+}
+
+.focused-test a {
+    display: inline-flex;
+
+    padding: 13px 21px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #A855F7
+        );
+
+    color: #FFFFFF !important;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.focused-test a:hover {
+    transform: translateY(-2px);
+}
+
+/* TIPS */
+
+.tips-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+.tip-card {
+    background: #0B0D18;
+
+    border: 1px solid #292C43;
+
+    border-radius: 13px;
+
+    padding: 19px;
+}
+
+.tip-card h3 {
+    color: #FFFFFF !important;
+    font-size: 16px;
+}
+
+.tip-card p {
+    color: #A1A1AA !important;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+/* ACTIONS */
+
+.actions {
+    display: flex;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.action-btn {
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+.primary-btn {
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #A855F7
+        );
+
+    color: #FFFFFF !important;
+}
+
+.secondary-btn {
+    background: #15172A;
+
+    border: 1px solid #292C43;
+
+    color: #FFFFFF !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .results-page {
+        padding: 40px 15px 60px;
+    }
+
+    .results-header h1 {
+        font-size: 31px;
+    }
+
+    .result-card {
+        padding: 23px;
+    }
+
+    .category-grid,
+    .tips-grid,
+    .example-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        text-align: center;
+    }
+
+}
+
+</style>
+
+
+<div class="results-page">
+
+<div class="results-container">
+
+
+    <!-- HEADER -->
+
+    <div class="results-header">
+
+        <h1>
+            Your Challenge Results
+        </h1>
+
+        <p>
+            Here's a breakdown of your social media safety knowledge.
+        </p>
+
+    </div>
+
+
+    <!-- SCORE -->
+
+    <div class="result-card">
+
+        <div class="score-section">
+
+            <div class="score-circle">
+
+                <div class="score-number">
+
+                    {{ result['score'] }}
+
+                    <span>
+                        /100
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <h2>
+                {{ result['habit_type'] }}
+            </h2>
+
+
+            {% if result['risk_level'] == 'Low Risk' %}
+
+                <div class="risk risk-low">
+                    {{ result['risk_level'] }}
+                </div>
+
+            {% elif result['risk_level'] == 'Moderate Risk' %}
+
+                <div class="risk risk-moderate">
+                    {{ result['risk_level'] }}
+                </div>
+
+            {% else %}
+
+                <div class="risk risk-high">
+                    {{ result['risk_level'] }}
+                </div>
+
+            {% endif %}
+
+
+            <p class="result-description">
+
+                Your score represents how safely you handled
+                situations involving privacy, account security,
+                oversharing, location safety and digital reputation.
+
+            </p>
+
+
+            {% if user_name %}
+
+            <div class="user-info">
+
+                Completed by:
+                <strong>
+                    {{ user_name }}
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY -->
+
+    <div class="result-card">
+
+        <h2 class="section-title">
+            Your Category Scores
+        </h2>
+
+
+        <div class="category-grid">
+
+
+            <div class="category-card">
+
+                <div class="category-top">
+
+                    <span class="category-name">
+                        Privacy
+                    </span>
+
+                    <span class="category-value">
+                        {{ categories['Privacy'] }}%
+                    </span>
+
+                </div>
+
+                <div class="category-bar">
+                    <div
+                        class="category-fill"
+                        style="width:{{ categories['Privacy'] }}%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="category-card">
+
+                <div class="category-top">
+
+                    <span class="category-name">
+                        Account Security
+                    </span>
+
+                    <span class="category-value">
+                        {{ categories['Account Security'] }}%
+                    </span>
+
+                </div>
+
+                <div class="category-bar">
+                    <div
+                        class="category-fill"
+                        style="width:{{ categories['Account Security'] }}%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="category-card">
+
+                <div class="category-top">
+
+                    <span class="category-name">
+                        Oversharing
+                    </span>
+
+                    <span class="category-value">
+                        {{ categories['Oversharing'] }}%
+                    </span>
+
+                </div>
+
+                <div class="category-bar">
+                    <div
+                        class="category-fill"
+                        style="width:{{ categories['Oversharing'] }}%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="category-card">
+
+                <div class="category-top">
+
+                    <span class="category-name">
+                        Location Safety
+                    </span>
+
+                    <span class="category-value">
+                        {{ categories['Location Safety'] }}%
+                    </span>
+
+                </div>
+
+                <div class="category-bar">
+                    <div
+                        class="category-fill"
+                        style="width:{{ categories['Location Safety'] }}%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="category-card">
+
+                <div class="category-top">
+
+                    <span class="category-name">
+                        Digital Reputation
+                    </span>
+
+                    <span class="category-value">
+                        {{ categories['Digital Reputation'] }}%
+                    </span>
+
+                </div>
+
+                <div class="category-bar">
+                    <div
+                        class="category-fill"
+                        style="width:{{ categories['Digital Reputation'] }}%;">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WEAKEST -->
+
+        <div class="weak-area">
+
+            <div class="weak-area-title">
+                Your weakest area: {{ weakest }}
+            </div>
+
+            <p>
+
+                Your score in this area is
+
+                <span class="weak-score">
+                    {{ categories[weakest] }}%
+                </span>.
+
+                This is the area where you should focus
+                on improving your online safety habits.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- WHAT TO IMPROVE -->
+
+    <div class="result-card">
+
+        <h2 class="section-title">
+            What You Need to Improve
+        </h2>
+
+
+        <ul class="improve-list">
+
+            {% for item in weakest_info.get('advice', []) %}
+
+            <li>
+                {{ item }}
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+    <!-- LEARNING -->
+
+    <div class="result-card">
+
+        <h2 class="section-title">
+            Learn About {{ weakest }}
+        </h2>
+
+
+        <div class="learn-box">
+
+            <h3>
+                {{ weakest_info.get('title', weakest) }}
+            </h3>
+
+            <p>
+                {{ weakest_info.get('description', '') }}
+            </p>
+
+
+            <div class="example-grid">
+
+                <div class="example safe">
+
+                    <strong>
+                        ✓ Safer approach
+                    </strong>
+
+                    <p>
+                        Think about who needs the information,
+                        what could happen if it becomes public,
+                        and whether sharing it is actually necessary.
+                    </p>
+
+                </div>
+
+
+                <div class="example unsafe">
+
+                    <strong>
+                        ✕ Risky approach
+                    </strong>
+
+                    <p>
+                        Sharing personal information publicly
+                        without considering who can access it
+                        or how it could be used later.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOCUSED TEST -->
+
+            <div class="focused-test">
+
+                <h3>
+                    Test your {{ weakest }} knowledge
+                </h3>
+
+                <p>
+                    You've identified {{ weakest }} as your
+                    weakest area. Let's see how much you've learned.
+                </p>
+
+                <a
+                    href="{{ url_for('final_test', result_id=result['id']) }}">
+
+                    Take the 5-Question Test →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TIPS -->
+
+    <div class="result-card">
+
+        <h2 class="section-title">
+            Safety Tips
+        </h2>
+
+
+        <div class="tips-grid">
+
+            <div class="tip-card">
+
+                <h3>
+                    🔒 Protect Your Privacy
+                </h3>
+
+                <p>
+                    Review who can see your profile,
+                    posts and personal information.
+                </p>
+
+            </div>
+
+
+            <div class="tip-card">
+
+                <h3>
+                    🛡️ Secure Your Accounts
+                </h3>
+
+                <p>
+                    Use strong unique passwords and
+                    enable two-factor authentication.
+                </p>
+
+            </div>
+
+
+            <div class="tip-card">
+
+                <h3>
+                    📍 Protect Your Location
+                </h3>
+
+                <p>
+                    Avoid sharing your exact live location
+                    or predictable daily routine.
+                </p>
+
+            </div>
+
+
+            <div class="tip-card">
+
+                <h3>
+                    💭 Think Before Posting
+                </h3>
+
+                <p>
+                    Consider what your post reveals and
+                    who could potentially see it.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <a
+                href="/challenge"
+                class="action-btn primary-btn">
+
+                Take Challenge Again
+
+            </a>
+
+            <a
+                href="/learn"
+                class="action-btn secondary-btn">
+
+                Explore Safety Tips
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</div>
+
+{% endblock %}

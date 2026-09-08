@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Admin Login — SafeSocial{% endblock %}
+{% block content %}
+
+<div class="auth">
+    <div class="auth-card">
+        <div class="auth-icon"><i class="fa-solid fa-lock"></i></div>
+        <h1>Admin Login</h1>
+        <p>Restricted access — for project admin only.</p>
+
+        <form method="POST" action="{{ url_for('admin_login') }}">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="btn full">Log In</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

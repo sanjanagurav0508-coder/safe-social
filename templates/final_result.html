@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Focused Test Complete{% endblock %}
+
+{% block content %}
+
+<style>
+    .final-result-page {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 45px 20px 70px;
+    }
+
+    .final-result-card {
+        background: #101221;
+        border: 1px solid #292d49;
+        border-radius: 22px;
+        padding: 36px;
+        text-align: center;
+        box-shadow: 0 20px 55px rgba(0,0,0,.22);
+    }
+
+    .final-result-card h1 {
+        margin: 0 0 8px;
+        font-size: 32px;
+        color: #fff;
+    }
+
+    .subtitle {
+        margin: 0 0 26px;
+        color: #aaa8bb;
+        font-size: 14px;
+    }
+
+    .area-badge {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(168,85,247,.12);
+        border: 1px solid rgba(168,85,247,.35);
+        color: #c084fc;
+        font-size: 12px;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+
+    .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin: 10px 0 24px;
+    }
+
+    .score-box {
+        background: #15182a;
+        border: 1px solid #292d49;
+        border-radius: 16px;
+        padding: 20px 14px;
+    }
+
+    .score-box.focused {
+        border-color: rgba(168,85,247,.65);
+        background: #19152b;
+    }
+
+    .score-label {
+        color: #aaa8bb;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .score-number {
+        font-size: 38px;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .score-box.focused .score-number {
+        color: #a855f7;
+    }
+
+    .improvement {
+        display: inline-block;
+        padding: 9px 15px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+
+    .improvement.positive {
+        color: #4ade80;
+        background: rgba(74,222,128,.10);
+        border: 1px solid rgba(74,222,128,.22);
+    }
+
+    .improvement.negative {
+        color: #f87171;
+        background: rgba(248,113,113,.10);
+        border: 1px solid rgba(248,113,113,.22);
+    }
+
+    .message {
+        color: #c9c6d5;
+        line-height: 1.65;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .result-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+    }
+
+    .result-btn {
+        display: inline-block;
+        padding: 11px 18px;
+        border-radius: 11px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(90deg,#7c3aed,#a855f7);
+    }
+
+    .result-btn.secondary {
+        background: #1b1e31;
+        border: 1px solid #343752;
+    }
+
+    @media(max-width:600px) {
+        .final-result-page { padding: 30px 12px 50px; }
+        .final-result-card { padding: 25px 16px; }
+        .final-result-card h1 { font-size: 27px; }
+        .comparison { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="final-result-page">
+    <div class="final-result-card">
+
+        <div class="area-badge">{{ weakest }}</div>
+
+        <h1>Focused Test Complete 🎉</h1>
+        <p class="subtitle">Here is how your understanding changed after focusing on your weakest area.</p>
+
+        <div class="comparison">
+            <div class="score-box">
+                <div class="score-label">Previous {{ weakest }} score</div>
+                <div class="score-number">{{ previous_score }}%</div>
+            </div>
+
+            <div class="score-box focused">
+                <div class="score-label">Focused Test score</div>
+                <div class="score-number">{{ final_result["score"] }}%</div>
+            </div>
+        </div>
+
+        <div class="improvement {% if improvement >= 0 %}positive{% else %}negative{% endif %}">
+            {% if improvement >= 0 %}
+                +{{ improvement }}% improvement
+            {% else %}
+                {{ improvement }}% change
+            {% endif %}
+        </div>
+
+        <p class="message">
+            {% if improvement > 0 %}
+                Your understanding of <strong>{{ weakest }}</strong> has improved! Keep using these safer habits.
+            {% elif improvement == 0 %}
+                Your score stayed the same. Review the learning material and try again to strengthen your understanding.
+            {% else %}
+                Keep learning about <strong>{{ weakest }}</strong>. Review the safety advice and try the focused test again.
+            {% endif %}
+        </p>
+
+        <div class="result-actions">
+            <a href="{{ url_for('results', result_id=result['id']) }}" class="result-btn">Back to My Results</a>
+            <a href="{{ url_for('leaderboard') }}?result={{ result['id'] }}" class="result-btn secondary">View Leaderboard</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

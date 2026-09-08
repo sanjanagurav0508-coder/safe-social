@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard{% endblock %}
+
+{% block content %}
+
+<style>
+    .leaderboard-page {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 30px 20px 50px;
+        color: #ffffff;
+    }
+
+    .leaderboard-header {
+        text-align: center;
+        margin-bottom: 22px;
+    }
+
+    .leaderboard-header h1 {
+        margin: 0 0 6px;
+        font-size: 34px;
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    .leaderboard-header p {
+        margin: 0;
+        color: #a9a7bd;
+        font-size: 14px;
+    }
+
+    .leaderboard-card {
+        background: #0f1120;
+        border: 1px solid #292d49;
+        border-radius: 18px;
+        padding: 12px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    .leaderboard-row {
+        display: grid;
+        grid-template-columns: 55px 1fr 100px;
+        align-items: center;
+        gap: 12px;
+
+        min-height: 62px;
+        padding: 0 16px;
+        margin-bottom: 8px;
+
+        background: #15182a;
+        border: 1px solid transparent;
+        border-radius: 12px;
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .leaderboard-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .leaderboard-row:hover {
+        transform: translateY(-1px);
+        border-color: #7c3aed;
+        background: #191c30;
+    }
+
+    .leaderboard-row.you {
+        border: 1px solid #a855f7;
+        background: #19152b;
+        box-shadow: 0 0 18px rgba(168, 85, 247, 0.10);
+    }
+
+    .rank {
+        font-size: 18px;
+        font-weight: 800;
+        color: #a9a7bd;
+        text-align: center;
+    }
+
+    .rank.medal {
+        font-size: 23px;
+    }
+
+    .participant-info {
+        min-width: 0;
+    }
+
+    .participant-name {
+        font-size: 15px;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 2px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .participant-label {
+        font-size: 11px;
+        color: #aaa8bb;
+    }
+
+    .you-badge {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: #a855f7;
+        color: #ffffff;
+        font-size: 9px;
+        font-weight: 700;
+        vertical-align: middle;
+    }
+
+    .score {
+        text-align: right;
+        font-size: 16px;
+        font-weight: 800;
+        color: #a855f7;
+        white-space: nowrap;
+    }
+
+    .empty-leaderboard {
+        text-align: center;
+        padding: 40px 20px;
+        color: #aaa8bb;
+    }
+
+    .empty-leaderboard h3 {
+        color: #ffffff;
+        margin-bottom: 8px;
+    }
+
+    .empty-leaderboard p {
+        margin: 0;
+    }
+
+    .my-result {
+        margin-top: 16px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        background: #101326;
+        border: 1px solid #292d49;
+        text-align: center;
+    }
+
+    .my-result h3 {
+        margin: 0 0 5px;
+        color: #ffffff;
+        font-size: 15px;
+    }
+
+    .my-result p {
+        margin: 0;
+        color: #aaa8bb;
+        font-size: 13px;
+    }
+
+    .my-result strong {
+        color: #a855f7;
+    }
+
+    .leaderboard-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+    }
+
+    .leaderboard-btn {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+        color: #ffffff;
+        background: #a855f7;
+        transition: 0.2s ease;
+    }
+
+    .leaderboard-btn:hover {
+        background: #9333ea;
+        transform: translateY(-1px);
+    }
+
+    .leaderboard-btn.secondary {
+        background: #1b1e31;
+        border: 1px solid #343752;
+    }
+
+    .leaderboard-btn.secondary:hover {
+        background: #242840;
+    }
+
+    .leaderboard-top-label {
+        text-align: center;
+        color: #aaa8bb;
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 650px) {
+        .leaderboard-page {
+            padding: 25px 12px 40px;
+        }
+
+        .leaderboard-header h1 {
+            font-size: 29px;
+        }
+
+        .leaderboard-row {
+            grid-template-columns: 42px 1fr 80px;
+            gap: 8px;
+            min-height: 58px;
+            padding: 0 12px;
+        }
+
+        .participant-name {
+            font-size: 14px;
+        }
+
+        .participant-label {
+            font-size: 10px;
+        }
+
+        .score {
+            font-size: 14px;
+        }
+
+        .rank {
+            font-size: 16px;
+        }
+
+        .rank.medal {
+            font-size: 20px;
+        }
+
+        .leaderboard-buttons {
+            flex-direction: column;
+        }
+
+        .leaderboard-btn {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="leaderboard-page">
+
+    <div class="leaderboard-header">
+        <h1>🏆 Leaderboard</h1>
+        <p>See how participants performed in today's challenge.</p>
+    </div>
+
+    <div class="leaderboard-card">
+
+        {% if board %}
+
+            <div class="leaderboard-top-label">
+                Top 5 Performers
+            </div>
+
+            <!-- ONLY SHOW TOP 5 -->
+            {% for person in board[:5] %}
+
+                <div class="leaderboard-row {% if person.is_you %}you{% endif %}">
+
+                    <div class="rank {% if person.rank <= 3 %}medal{% endif %}">
+
+                        {% if person.rank == 1 %}
+                            🥇
+                        {% elif person.rank == 2 %}
+                            🥈
+                        {% elif person.rank == 3 %}
+                            🥉
+                        {% else %}
+                            {{ person.rank }}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="participant-info">
+
+                        <div class="participant-name">
+
+                            {{ person.name }}
+
+                            {% if person.is_you %}
+                                <span class="you-badge">YOU</span>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="participant-label">
+
+                            {% if person.is_you %}
+                                Your result
+                            {% else %}
+                                Today's participant
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="score">
+                        {{ person.score }}/100
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-leaderboard">
+                <h3>No challenge results yet</h3>
+                <p>Be the first participant to complete today's challenge.</p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if my_rank %}
+
+        <div class="my-result">
+
+            <h3>Your leaderboard position</h3>
+
+            <p>
+                You are currently
+                <strong>#{{ my_rank }}</strong>
+                out of {{ board|length }} participants.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <div class="leaderboard-buttons">
+
+        <a href="{{ url_for('challenge') }}" class="leaderboard-btn">
+            Take Challenge Again
+        </a>
+
+        <a href="{{ url_for('home') }}" class="leaderboard-btn secondary">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

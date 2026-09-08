@@ -1,0 +1,1723 @@
+{% extends "base.html" %}
+
+{% block title %}
+Social Media Safety Challenge
+{% endblock %}
+
+{% block content %}
+
+<style>
+.challenge-page {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.challenge-intro {
+    text-align: center;
+    padding: 65px 20px 25px;
+}
+
+.challenge-intro h1 {
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 42px;
+    line-height: 1.2;
+    margin: 0 0 14px;
+}
+
+.challenge-intro h1 span {
+    color: #A855F7 !important;
+}
+
+.challenge-intro p {
+    max-width: 720px;
+    margin: auto;
+    color: #A1A1AA !important;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* START */
+
+.challenge-start {
+    max-width: 640px;
+    margin: 35px auto 70px;
+    padding: 30px;
+
+    background: #101221;
+    border: 1px solid #232544;
+    border-radius: 16px;
+
+    box-shadow: 0 20px 55px rgba(0,0,0,.25);
+}
+
+.challenge-start h2 {
+    color: #FFFFFF !important;
+    font-family: 'Poppins', sans-serif;
+    margin: 0 0 12px;
+    font-size: 25px;
+}
+
+.challenge-start p {
+    color: #A1A1AA !important;
+    line-height: 1.7;
+}
+
+.name-label {
+    display: block;
+    margin-top: 22px;
+    margin-bottom: 7px;
+
+    color: #FFFFFF !important;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.name-input {
+    width: 100% !important;
+    height: 48px;
+
+    box-sizing: border-box;
+
+    background: #15172A !important;
+    color: #FFFFFF !important;
+
+    border: 1px solid #232544 !important;
+    border-radius: 9px;
+
+    padding: 12px 14px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+
+    outline: none;
+
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.name-input::placeholder {
+    color: #A1A1AA !important;
+    opacity: 1;
+    -webkit-text-fill-color: #A1A1AA !important;
+}
+
+.name-input:focus {
+    border-color: #A855F7 !important;
+    box-shadow: 0 0 0 3px rgba(168,85,247,.12);
+}
+
+.name-error {
+    display: none;
+
+    margin-top: 10px;
+    padding: 10px 12px;
+
+    border: 1px solid #EF4444;
+    border-radius: 9px;
+
+    background: rgba(239,68,68,.08);
+    color: #FFC4B8 !important;
+
+    font-size: 13px;
+}
+
+/* QUIZ */
+
+#quizScreen {
+    display: none;
+}
+
+.challenge-wrap {
+    max-width: 640px;
+    margin: 40px auto 70px;
+}
+
+.challenge-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.question-label {
+    color: #A1A1AA !important;
+    font-size: 13px;
+}
+
+.question-label span {
+    color: #A855F7 !important;
+    font-weight: 700;
+}
+
+.challenge-progress {
+    display: flex;
+    gap: 6px;
+    margin-top: 9px;
+}
+
+.progress-dot {
+    width: 24px;
+    height: 6px;
+
+    border-radius: 4px;
+
+    background: #232544;
+}
+
+.progress-dot.done {
+    background: #A855F7;
+}
+
+.progress-dot.current {
+    background: #7C3AED;
+}
+
+.timer-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #101221;
+    border: 1px solid #232544;
+
+    color: #A1A1AA;
+
+    font-size: 12px;
+}
+
+/* QUESTION */
+
+.scenario-card {
+    background: #101221;
+    border: 1px solid #232544;
+    border-radius: 16px;
+
+    padding: 28px;
+}
+
+.scenario-label {
+    margin-bottom: 14px;
+
+    color: #A1A1AA !important;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.scenario-card h2 {
+    color: #FFFFFF !important;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 20px;
+    line-height: 1.55;
+
+    margin-bottom: 20px;
+}
+
+/* CHOICES */
+
+.choice-btn {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 14px 18px;
+
+    background: #15172A;
+
+    border: 1px solid #232544;
+    border-radius: 12px;
+
+    color: #FFFFFF !important;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.choice-btn:hover {
+    border-color: #8B5CF6;
+    background: #191B30;
+}
+
+.choice-btn.selected {
+    border-color: #A855F7;
+
+    background: rgba(168,85,247,.12);
+
+    box-shadow:
+        0 0 0 1px rgba(168,85,247,.15);
+}
+
+/* ERROR */
+
+.feedback-box {
+    display: none;
+
+    margin-top: 16px;
+
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+.feedback-box.show {
+    display: block;
+}
+
+.feedback-box.danger {
+    background: rgba(239,68,68,.1);
+    border: 1px solid #EF4444;
+    color: #FFC4B8 !important;
+}
+
+/* BUTTON */
+
+.next-btn-row {
+    margin-top: 22px;
+    text-align: right;
+}
+
+.challenge-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 26px;
+
+    border: none;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7C3AED,
+            #A855F7
+        );
+
+    color: #FFFFFF !important;
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 22px rgba(124,58,237,.35);
+}
+
+.challenge-button:hover {
+    transform: translateY(-2px);
+}
+
+.challenge-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .challenge-intro {
+        padding: 45px 18px 20px;
+    }
+
+    .challenge-intro h1 {
+        font-size: 32px;
+    }
+
+    .challenge-start {
+        margin: 25px 15px 50px;
+        padding: 23px;
+    }
+
+    .challenge-wrap {
+        margin: 25px 15px 50px;
+    }
+
+    .challenge-top {
+        gap: 15px;
+    }
+
+    .scenario-card {
+        padding: 22px;
+    }
+
+    .scenario-card h2 {
+        font-size: 18px;
+    }
+
+}
+</style>
+
+
+<div class="challenge-page">
+
+    <!-- INTRO -->
+
+    <section class="challenge-intro">
+
+        <h1>
+            Social Media Safety
+            <span>Challenge</span>
+        </h1>
+
+        <p>
+            Test how well you can handle realistic situations
+            involving privacy, account security, oversharing,
+            location safety, and your digital reputation.
+        </p>
+
+    </section>
+
+
+    <!-- START -->
+
+    <section
+        class="challenge-start"
+        id="startScreen">
+
+        <h2>
+            Ready to test your knowledge?
+        </h2>
+
+        <p>
+            You will face 10 realistic social media situations.
+            Choose the safest response for each situation.
+            Think carefully before making your choice.
+        </p>
+
+
+        <label
+            class="name-label"
+            for="userName">
+
+            Your Name
+
+        </label>
+
+
+        <input
+            type="text"
+            id="userName"
+            class="name-input"
+            placeholder="Enter your name"
+            maxlength="30"
+            autocomplete="off"
+        >
+
+
+        <div
+            id="nameError"
+            class="name-error">
+
+            Please enter your name before starting.
+
+        </div>
+
+
+        <button
+            type="button"
+            id="startButton"
+            class="challenge-button"
+            style="width:100%; margin-top:18px;">
+
+            Start Challenge
+
+        </button>
+
+    </section>
+
+
+    <!-- QUIZ -->
+
+    <section id="quizScreen">
+
+        <div class="challenge-wrap">
+
+            <div class="challenge-top">
+
+                <div>
+
+                    <div class="question-label">
+
+                        Question
+                        <span id="questionNumber">1</span>
+                        of 10
+
+                    </div>
+
+                    <div
+                        class="challenge-progress"
+                        id="progressDots">
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="timer-chip"
+                    id="timerChip">
+
+                    ⏱
+                    <span id="timer">
+                        30s
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div id="questions">
+
+
+                <!-- 1 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="0"
+                    data-category="privacy">
+
+                    <div class="scenario-label">
+                        Privacy
+                    </div>
+
+                    <h2>
+                        A new follower asks which building on your
+                        college campus you usually have classes in
+                        because they want to "meet you sometime."
+                        What is the safest response?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Tell them the building because it is
+                        a public place.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Tell them the building but avoid sharing
+                        your classroom number.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Avoid sharing your regular location and
+                        keep the conversation general.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 2 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="1"
+                    data-category="security">
+
+                    <div class="scenario-label">
+                        Account Security
+                    </div>
+
+                    <h2>
+                        Someone messages you saying,
+                        "Instagram accidentally sent the verification
+                        code to your phone. Send it to me quickly."
+                        What should you do?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Send the code because you know the person.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Never share the verification code and
+                        verify the account activity yourself.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Send the code only if they promise not
+                        to use it again.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 3 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="2"
+                    data-category="location">
+
+                    <div class="scenario-label">
+                        Location Safety
+                    </div>
+
+                    <h2>
+                        You are at your favourite café and want to
+                        post a photo. The app automatically adds
+                        your current location. What is the safer
+                        choice?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Remove or disable the location information
+                        before posting.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Keep the location but share the post only
+                        with some followers.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Keep the location because cafés are
+                        public places.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 4 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="3"
+                    data-category="oversharing">
+
+                    <div class="scenario-label">
+                        Oversharing
+                    </div>
+
+                    <h2>
+                        A follower asks, "You always post from the
+                        gym around 7 PM. Which gym do you go to?"
+                        What would be the safest response?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Tell them the gym because they may want
+                        to join too.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Tell them the gym but avoid mentioning
+                        the exact time.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Avoid revealing your regular location
+                        and routine.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 5 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="4"
+                    data-category="reputation">
+
+                    <div class="scenario-label">
+                        Digital Reputation
+                    </div>
+
+                    <h2>
+                        You are angry with classmates and want to
+                        publicly post that they cheated in an exam.
+                        You have not checked all the facts yet.
+                        What is the safest approach?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Post it immediately so everyone knows.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Pause, verify the facts, and use an
+                        appropriate private or official channel
+                        if action is needed.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Post it but remove the classmates' names.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 6 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="5"
+                    data-category="privacy">
+
+                    <div class="scenario-label">
+                        Privacy
+                    </div>
+
+                    <h2>
+                        A competition organiser asks for your full
+                        name, phone number, college ID and date of
+                        birth through social media. What should you do?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Send everything because the organiser
+                        says it is required.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Send the information but only through
+                        the social media chat.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Verify the organiser independently and
+                        only provide information through a
+                        legitimate official process.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 7 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="6"
+                    data-category="security">
+
+                    <div class="scenario-label">
+                        Account Security
+                    </div>
+
+                    <h2>
+                        An old website you used years ago was involved
+                        in a data breach. You used the same password
+                        on another social media account. What should
+                        you do?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Change the reused password immediately and
+                        use unique passwords for important accounts.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Change the password only on the old website.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Do nothing because the breach happened
+                        in the past.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 8 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="7"
+                    data-category="location">
+
+                    <div class="scenario-label">
+                        Location Safety
+                    </div>
+
+                    <h2>
+                        You are currently attending an event and want
+                        to post a story showing the venue and your
+                        exact location in real time. What is safer?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Post your exact location immediately because
+                        the event is public.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Consider posting later rather than revealing
+                        your exact location in real time.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Share the location only with people who
+                        follow you.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 9 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="8"
+                    data-category="oversharing">
+
+                    <div class="scenario-label">
+                        Oversharing
+                    </div>
+
+                    <h2>
+                        You receive an internship and post a photo
+                        showing your ID badge, office building and
+                        joining letter. What could be risky about
+                        this post?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        It may reveal personal or workplace
+                        information that should not be public.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Only the office building is sensitive;
+                        everything else is fine.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        There is no risk because the internship
+                        is legitimate.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+
+                <!-- 10 -->
+
+                <div
+                    class="scenario-card question"
+                    data-index="9"
+                    data-category="reputation">
+
+                    <div class="scenario-label">
+                        Digital Reputation
+                    </div>
+
+                    <h2>
+                        You posted an angry public comment several
+                        years ago. You are now applying for an
+                        internship and realise the post is still
+                        visible. What is the best lesson?
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="10">
+
+                        Online posts can affect your future reputation,
+                        so review your digital footprint and think
+                        before posting.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="5">
+
+                        Old posts never matter because they are
+                        no longer recent.
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-score="0">
+
+                        Delete your account whenever you apply
+                        for a job.
+
+                    </button>
+
+                    <div class="feedback-box"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="next-btn-row">
+
+                <button
+                    type="button"
+                    class="challenge-button"
+                    id="nextButton">
+
+                    Next →
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="challenge-button"
+                    id="finishButton"
+                    style="display:none;">
+
+                    Finish Challenge
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const startScreen =
+        document.getElementById("startScreen");
+
+    const quizScreen =
+        document.getElementById("quizScreen");
+
+    const userName =
+        document.getElementById("userName");
+
+    const nameError =
+        document.getElementById("nameError");
+
+    const startButton =
+        document.getElementById("startButton");
+
+    const nextButton =
+        document.getElementById("nextButton");
+
+    const finishButton =
+        document.getElementById("finishButton");
+
+    const questionNumber =
+        document.getElementById("questionNumber");
+
+    const timer =
+        document.getElementById("timer");
+
+    const timerChip =
+        document.getElementById("timerChip");
+
+    const progressDots =
+        document.getElementById("progressDots");
+
+    const questions =
+        document.querySelectorAll(".question");
+
+    const totalQuestions =
+        questions.length;
+
+    let currentQuestion = 0;
+
+    let timeLeft = 30;
+
+    let timerInterval = null;
+
+    let playerName = "";
+
+    const answers =
+        new Array(totalQuestions).fill(null);
+
+
+    /* CREATE DOTS */
+
+    for (
+        let i = 0;
+        i < totalQuestions;
+        i++
+    ) {
+
+        const dot =
+            document.createElement("div");
+
+        dot.className =
+            "progress-dot";
+
+        progressDots.appendChild(dot);
+
+    }
+
+    const dots =
+        progressDots.querySelectorAll(
+            ".progress-dot"
+        );
+
+
+    /* START */
+
+    startButton.addEventListener(
+        "click",
+        function () {
+
+            const enteredName =
+                userName.value.trim();
+
+            if (!enteredName) {
+
+                nameError.style.display =
+                    "block";
+
+                userName.focus();
+
+                return;
+
+            }
+
+            playerName =
+                enteredName.substring(0, 30);
+
+            nameError.style.display =
+                "none";
+
+            startScreen.style.display =
+                "none";
+
+            quizScreen.style.display =
+                "block";
+
+            currentQuestion = 0;
+
+            showQuestion(0);
+
+        }
+    );
+
+
+    /* ENTER KEY */
+
+    userName.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                startButton.click();
+
+            }
+
+        }
+    );
+
+
+    /* SHOW QUESTION */
+
+    function showQuestion(index) {
+
+        questions.forEach(
+            function (question, i) {
+
+                question.style.display =
+                    i === index
+                        ? "block"
+                        : "none";
+
+            }
+        );
+
+        questionNumber.textContent =
+            index + 1;
+
+        dots.forEach(
+            function (dot, i) {
+
+                dot.classList.remove(
+                    "done",
+                    "current"
+                );
+
+                if (i < index) {
+
+                    dot.classList.add(
+                        "done"
+                    );
+
+                }
+
+                if (i === index) {
+
+                    dot.classList.add(
+                        "current"
+                    );
+
+                }
+
+            }
+        );
+
+        if (
+            index === totalQuestions - 1
+        ) {
+
+            nextButton.style.display =
+                "none";
+
+            finishButton.style.display =
+                "inline-flex";
+
+        } else {
+
+            nextButton.style.display =
+                "inline-flex";
+
+            finishButton.style.display =
+                "none";
+
+        }
+
+        restoreAnswer(index);
+
+        startTimer();
+
+    }
+
+
+    /* RESTORE */
+
+    function restoreAnswer(index) {
+
+        const buttons =
+            questions[index]
+                .querySelectorAll(
+                    ".choice-btn"
+                );
+
+        buttons.forEach(
+            function (button) {
+
+                button.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+        if (answers[index] === null) {
+
+            return;
+
+        }
+
+        buttons.forEach(
+            function (button) {
+
+                if (
+                    parseInt(
+                        button.dataset.score,
+                        10
+                    ) === answers[index]
+                ) {
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* TIMER */
+
+    function startTimer() {
+
+        clearInterval(timerInterval);
+
+        timeLeft = 30;
+
+        updateTimer();
+
+        timerInterval =
+            setInterval(
+                function () {
+
+                    timeLeft--;
+
+                    updateTimer();
+
+                    if (timeLeft <= 0) {
+
+                        clearInterval(
+                            timerInterval
+                        );
+
+                    }
+
+                },
+                1000
+            );
+
+    }
+
+
+    function updateTimer() {
+
+        timer.textContent =
+            timeLeft + "s";
+
+        timerChip.style.color =
+            "#A1A1AA";
+
+        timerChip.style.borderColor =
+            "#232544";
+
+        if (timeLeft <= 10) {
+
+            timerChip.style.color =
+                "#EF4444";
+
+            timerChip.style.borderColor =
+                "#EF4444";
+
+        } else if (timeLeft <= 20) {
+
+            timerChip.style.color =
+                "#F5A623";
+
+            timerChip.style.borderColor =
+                "#F5A623";
+
+        }
+
+    }
+
+
+    /* ANSWERS */
+
+    questions.forEach(
+        function (question, index) {
+
+            const buttons =
+                question.querySelectorAll(
+                    ".choice-btn"
+                );
+
+            buttons.forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            const score =
+                                parseInt(
+                                    button.dataset.score,
+                                    10
+                                );
+
+                            answers[index] =
+                                score;
+
+                            buttons.forEach(
+                                function (item) {
+
+                                    item.classList.remove(
+                                        "selected"
+                                    );
+
+                                }
+                            );
+
+                            button.classList.add(
+                                "selected"
+                            );
+
+                            dots[index].classList.add(
+                                "done"
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* NEXT */
+
+    nextButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                answers[currentQuestion] ===
+                null
+            ) {
+
+                showError();
+
+                return;
+
+            }
+
+            clearInterval(
+                timerInterval
+            );
+
+            currentQuestion++;
+
+            showQuestion(
+                currentQuestion
+            );
+
+        }
+    );
+
+
+    /* FINISH */
+
+    finishButton.addEventListener(
+        "click",
+        function () {
+
+            for (
+                let i = 0;
+                i < totalQuestions;
+                i++
+            ) {
+
+                if (
+                    answers[i] === null
+                ) {
+
+                    currentQuestion = i;
+
+                    showQuestion(i);
+
+                    showError();
+
+                    return;
+
+                }
+
+            }
+
+            clearInterval(
+                timerInterval
+            );
+
+            submitChallenge();
+
+        }
+    );
+
+
+    function showError() {
+
+        const box =
+            questions[currentQuestion]
+                .querySelector(
+                    ".feedback-box"
+                );
+
+        box.textContent =
+            "Please select an answer before continuing.";
+
+        box.className =
+            "feedback-box show danger";
+
+    }
+
+
+    /* SUBMIT */
+
+    async function submitChallenge() {
+
+        finishButton.disabled =
+            true;
+
+        finishButton.textContent =
+            "Submitting...";
+
+
+        let privacy = 0;
+        let security = 0;
+        let oversharing = 0;
+        let location = 0;
+        let reputation = 0;
+
+
+        questions.forEach(
+            function (question, index) {
+
+                const score =
+                    answers[index];
+
+                const category =
+                    question.dataset.category;
+
+                if (category === "privacy") {
+
+                    privacy += score;
+
+                } else if (
+                    category === "security"
+                ) {
+
+                    security += score;
+
+                } else if (
+                    category === "oversharing"
+                ) {
+
+                    oversharing += score;
+
+                } else if (
+                    category === "location"
+                ) {
+
+                    location += score;
+
+                } else if (
+                    category === "reputation"
+                ) {
+
+                    reputation += score;
+
+                }
+
+            }
+        );
+
+
+        const privacyPercent =
+            privacy * 5;
+
+        const securityPercent =
+            security * 5;
+
+        const oversharingPercent =
+            oversharing * 5;
+
+        const locationPercent =
+            location * 5;
+
+        const reputationPercent =
+            reputation * 5;
+
+
+        const overall =
+            Math.round(
+                (
+                    privacyPercent +
+                    securityPercent +
+                    oversharingPercent +
+                    locationPercent +
+                    reputationPercent
+                ) / 5
+            );
+
+
+        const payload = {
+
+            name: playerName,
+
+            score: overall,
+
+            privacy: privacyPercent,
+
+            security: securityPercent,
+
+            oversharing: oversharingPercent,
+
+            location: locationPercent,
+
+            reputation: reputationPercent
+
+        };
+
+
+        console.log(
+            "Challenge payload:",
+            payload
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/submit-challenge",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "Challenge response:",
+                data
+            );
+
+
+            /*
+             * IMPORTANT FIX:
+             *
+             * Flask returns:
+             * { success: true, id: result_id }
+             */
+
+            if (
+                response.ok &&
+                data.success === true &&
+                data.id
+            ) {
+
+                window.location.href =
+                    "/results/" + data.id;
+
+                return;
+
+            }
+
+
+            throw new Error(
+                data.error ||
+                "Unable to save challenge result."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Challenge submission error:",
+                error
+            );
+
+            finishButton.disabled =
+                false;
+
+            finishButton.textContent =
+                "Finish Challenge";
+
+            const box =
+                questions[currentQuestion]
+                    .querySelector(
+                        ".feedback-box"
+                    );
+
+            box.textContent =
+                error.message;
+
+            box.className =
+                "feedback-box show danger";
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

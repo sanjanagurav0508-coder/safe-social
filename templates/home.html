@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}SafeSocial — What does your internet know about you?{% endblock %}
+{% block content %}
+
+<section class="hero">
+    <h1>What does your internet know <span class="highlight">about you?</span></h1>
+    <p class="sub">Take the 60-second challenge and discover how visible you are online.</p>
+    <p class="reassurance">No registration. No real social-media information required.</p>
+    <div class="hero-actions">
+        <a href="{{ url_for('challenge') }}" class="btn">Start Challenge</a>
+        <a href="{{ url_for('learn') }}" class="btn outline">Explore Safety Tips</a>
+    </div>
+</section>
+
+<div class="feature-grid">
+    <div class="feature-card">
+        <div class="icon">⚡</div>
+        <h3>60-Second Challenge</h3>
+        <p>Quick. Fun. Insightful.</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon">📊</div>
+        <h3>Instant Results</h3>
+        <p>Know your digital habits.</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon">🎯</div>
+        <h3>Personalized Tips</h3>
+        <p>Fix what matters most.</p>
+    </div>
+    <div class="feature-card">
+        <div class="icon">🛡️</div>
+        <h3>Stay Safer Online</h3>
+        <p>Build a better digital you.</p>
+    </div>
+</div>
+
+{% endblock %}

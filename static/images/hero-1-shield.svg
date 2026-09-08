@@ -1,0 +1,31 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="g1" cx="70%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#123B34"/>
+      <stop offset="100%" stop-color="#0A0F1C"/>
+    </radialGradient>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2FE3C4" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#2FE3C4" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g1)"/>
+  <g opacity="0.5">
+    <circle cx="150" cy="120" r="2" fill="#2FE3C4"/>
+    <circle cx="320" cy="80" r="2" fill="#2FE3C4"/>
+    <circle cx="980" cy="140" r="2" fill="#2FE3C4"/>
+    <circle cx="1080" cy="620" r="2" fill="#2FE3C4"/>
+    <circle cx="200" cy="680" r="2" fill="#2FE3C4"/>
+    <circle cx="900" cy="700" r="2" fill="#2FE3C4"/>
+  </g>
+  <g transform="translate(750,400)">
+    <path d="M0,-220 L160,-160 L160,20 C160,140 80,220 0,260 C-80,220 -160,140 -160,20 L-160,-160 Z"
+          fill="url(#shieldGrad)" stroke="#2FE3C4" stroke-width="3" opacity="0.85"/>
+    <path d="M-70,10 L-20,60 L90,-60" fill="none" stroke="#0A0F1C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-70,10 L-20,60 L90,-60" fill="none" stroke="#2FE3C4" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g stroke="#2FE3C4" stroke-width="1" opacity="0.25">
+    <line x1="750" y1="180" x2="750" y2="620"/>
+    <line x1="590" y1="400" x2="910" y2="400"/>
+  </g>
+</svg>

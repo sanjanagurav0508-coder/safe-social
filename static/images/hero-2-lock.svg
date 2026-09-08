@@ -1,0 +1,30 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="g2" cx="65%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#0F1729"/>
+      <stop offset="100%" stop-color="#0A0F1C"/>
+    </radialGradient>
+    <linearGradient id="lockGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2FE3C4" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#2FE3C4" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g2)"/>
+  <g font-family="monospace" font-size="13" fill="#2FE3C4" opacity="0.18">
+    <text x="80" y="100">01001 11010</text>
+    <text x="900" y="140">10110 00101</text>
+    <text x="120" y="700">11001 01010</text>
+    <text x="920" y="660">00110 10011</text>
+  </g>
+  <g transform="translate(720,420)">
+    <rect x="-110" y="-20" width="220" height="180" rx="24" fill="url(#lockGrad)" stroke="#2FE3C4" stroke-width="3" opacity="0.9"/>
+    <path d="M-65,-20 L-65,-90 C-65,-140 65,-140 65,-90 L65,-20"
+          fill="none" stroke="#2FE3C4" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="0" cy="60" r="16" fill="#0A0F1C"/>
+    <rect x="-7" y="60" width="14" height="40" rx="6" fill="#0A0F1C"/>
+  </g>
+  <g stroke="#2FE3C4" stroke-width="1" opacity="0.2">
+    <circle cx="720" cy="410" r="180" fill="none"/>
+    <circle cx="720" cy="410" r="240" fill="none"/>
+  </g>
+</svg>
